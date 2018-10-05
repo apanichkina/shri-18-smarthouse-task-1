@@ -18,5 +18,10 @@
   "bugs": {
     "url": "https://github.com/apanichkina/shri-18-smarthouse-task-1/issues"
   },
-  "homepage": "https://github.com/apanichkina/shri-18-smarthouse-task-1#readme"
+  "homepage": "https://apanichkina.github.io/shri-18-smarthouse-task-1/",
+  "dependencies": {},
+  "devDependencies": {
+    "stylelint": "^9.6.0",
+    "stylelint-config-standard": "^18.2.0"
+  }
 }
