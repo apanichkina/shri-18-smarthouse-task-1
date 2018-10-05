@@ -1,0 +1,22 @@
+{
+  "name": "shri-18-smarthouse-task-1",
+  "version": "1.0.0",
+  "description": "homework-1",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/apanichkina/shri-18-smarthouse-task-1.git"
+  },
+  "keywords": [
+    "sri"
+  ],
+  "author": "\"Anna Panichkina <annjellyiu5@gmail.com>",
+  "license": "SEE LICENSE IN <README.md>",
+  "bugs": {
+    "url": "https://github.com/apanichkina/shri-18-smarthouse-task-1/issues"
+  },
+  "homepage": "https://github.com/apanichkina/shri-18-smarthouse-task-1#readme"
+}
