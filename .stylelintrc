@@ -1,0 +1,37 @@
+{
+  "extends": "stylelint-config-standard",
+  "rules": {
+    "at-rule-no-unknown": [
+      true,
+      {
+        "ignoreAtRules": [
+          "extend",
+          "apply",
+          "mixin",
+          "define-mixin"
+        ]
+      }
+    ],
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": [
+          "global"
+        ]
+      }
+    ],
+    "at-rule-empty-line-before": [
+      "always",
+      {
+        "ignoreAtRules": [
+          "apply",
+          "extend",
+          "custom-media",
+          "import"
+        ]
+      }
+    ],
+    "block-no-empty": null,
+    "custom-property-empty-line-before": null
+  }
+}
