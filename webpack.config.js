@@ -19,19 +19,19 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.svg$/,
-        use: [
-          {
-            loader: 'file-loader',
-          },
-        ],
-      },
-      {
         test: /\.css$/,
         use: ['css-hot-loader'].concat(cssExtractTextPlugin.extract({
           fallback: 'style-loader',
-          use: ['css-loader', 'postcss-loader'],
+          use: ['css-loader?url=false', 'postcss-loader'],
         })),
+      },
+      {
+        test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|eot|ttf)$/,
+        loader: 'url-loader',
+        options: {
+          name: '[hash].[ext]',
+          limit: 8 * 1024,
+        },
       },
     ],
   },

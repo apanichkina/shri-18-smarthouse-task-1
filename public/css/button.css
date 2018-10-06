@@ -1,0 +1,70 @@
+.icon-button {
+  height: 16px;
+  width: 16px;
+  border: none;
+  outline: 0;
+}
+
+.icon-button + .icon-button {
+  margin-left: 15px;
+}
+
+.nav__button {
+  background: url('../images/icon_list.svg') no-repeat center center;
+  display: none;
+  cursor: pointer;
+}
+
+.arrow__container {
+  display: inline-flex;
+}
+
+/*.arrow-right {*/
+/*background: url('images/arrow-left.svg') no-repeat center center;*/
+/*transform: scale(-1, 1);*/
+/*}*/
+
+/*.arrow-right__active {*/
+/*background: url('images/arrow-left__active.svg') no-repeat center center;*/
+/*cursor: pointer;*/
+/*}*/
+
+.button {
+  @extend .text_xl;
+
+  border-radius: var(--button-border-radius);
+  height: 54px;
+  background-color: var(--color-gray);
+  outline: 0;
+  border: none;
+  padding: 0 48px;
+  cursor: pointer;
+}
+
+.button_accent {
+  background-color: var(--color-accent);
+}
+
+@media (--less-than-720-viewport) {
+  .icon-button {
+    display: none;
+  }
+
+  .nav__button {
+    display: inline-block;
+  }
+}
+
+.controls > .button:first-child {
+  background-color: var(--color-accent);
+}
+
+.controls > .button + .button {
+  margin-left: 18px;
+}
+
+@media (max-width: 375px) {
+  .button {
+    height: 44px;
+  }
+}

@@ -1,0 +1,43 @@
+html,
+body {
+  font: 14px/16px YandexSans, Arial, Helvetica, sans-serif;
+}
+
+.text_bold {
+  font-weight: 700;
+}
+
+.text_xxxl {
+  font-size: 36px;
+  line-height: 42px;
+}
+
+.text_xxl {
+  font-size: 24px;
+  line-height: 28px;
+}
+
+.text_xl {
+  font-size: 20px;
+  line-height: 23px;
+}
+
+.text_l {
+  font-size: 18px;
+  line-height: 21px;
+}
+
+.text_m {
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.text_s {
+  font-size: 14px;
+  line-height: 17px;
+}
+
+.text_xs {
+  font-size: 12px;
+  line-height: 14px;
+}
