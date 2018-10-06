@@ -159,16 +159,67 @@ const data = {
   ]
 };
 
+const IMAGE_PATH = 'images/icons/';
+
+function fillCardDataEl(type, data) {
+  const template = document.getElementsByTagName("template")[0];
+
+  if (type === "fridge" && data.buttons && data.buttons.length > 1) {
+    const controlsTmpl = template.content.querySelector("div.controls");
+    const buttonTmpl =  template.content.querySelector("button.button");
+    const controls = document.importNode(controlsTmpl, true);
+
+
+    for (let i = 0; i < data.buttons.length; i++) {
+      const button = document.importNode(buttonTmpl, true);
+      button.textContent = data.buttons[i];
+      controls.appendChild(button);
+    }
+
+    return controls
+  }
+
+  return null
+}
+
+function fillCard(card, content) {
+  const header = card.querySelector("div.card__header");
+  const title = card.querySelector("span.card__title");
+  const icon = card.querySelector("img.card__icon");
+  const body = card.querySelector("div.card__body");
+
+  let imageName = content.icon;
+
+  if (content.type === 'critical') {
+    header.classList.add('card__header_red');
+    imageName += '-white';
+  }
+
+  icon.src = IMAGE_PATH + imageName + '.svg';
+  title.textContent = content.title;
+  body.textContent = content.description;
+
+  if (content.data) {
+    const cardDataEl = fillCardDataEl(content.icon, content.data);
+
+    if (cardDataEl) {
+      body.appendChild(cardDataEl)
+    }
+  }
+
+  card.classList.add(`card_${content.size}`);
+}
+
 function setContent(parentEl) {
   const template = document.getElementsByTagName("template")[0];
-  const itemFromTemplate = template.content.querySelector("div");
+  const cardTmpl = template.content.querySelector("div.card");
   const content = data.events || [];
-  let item = null;
+  let card = null;
 
   for (let i = 0; i < content.length; i++) {
-    item = document.importNode(itemFromTemplate, true);
-    item.textContent = content[i].title;
-    parentEl.appendChild(item);
+    card = document.importNode(cardTmpl, true);
+    fillCard(card, content[i]);
+    parentEl.appendChild(card);
   }
 }
 

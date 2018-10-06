@@ -13,7 +13,21 @@
 
 <!-- TEMPLATES -->
 <template>
-  <div class="card">Loading...</div>
+  <div class="card">
+    <div class="card__header row">
+      <img class="card__icon" src="" alt=""/>
+      <span class="card__title text_bold"></span>
+    </div>
+    <div class="card__body">
+
+    </div>
+  </div>
+
+  <div class="controls row">
+  </div>
+
+  <button class="button text_bold">
+  </button>
 </template>
 <!---->
 
@@ -23,9 +37,12 @@
             <a href="#" target="_blank"></a>
         </span>
     <button class="nav__button icon-button" type="button"></button>
-    <nav class="nav text__m text__bold">
+    <nav class="nav text__m text_bold">
       <ul class="nav-content">
         <li class="nav__tab nav__tab_active">
+          События
+        </li>
+        <li class="nav__tab">
           Сводка
         </li>
         <li class="nav__tab">
@@ -37,10 +54,10 @@
       </ul>
     </nav>
   </header>
-  <div id="content" class="content container js-wrapper-block">
+  <main id="content" class="content container js-wrapper-block">
     <!-- content -->
-  </div>
-  <footer class="footer text__secondary text__xs container">
+  </main>
+  <footer class="footer text_secondary text__xs container">
     <div class="footer-content">
       <div class="footer-content__left">
         <span class="footer__link">
