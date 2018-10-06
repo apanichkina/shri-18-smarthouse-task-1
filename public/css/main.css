@@ -88,7 +88,7 @@ body {
   height: var(--logo-height);
   width: var(--logo-width);
   position: relative;
-  background: url('images/logo.svg') no-repeat left top;
+  background: url('/images/logo.svg') no-repeat left top;
   vertical-align: top;
 }
 
@@ -212,7 +212,7 @@ body {
 }
 
 .nav__button {
-  background: url('images/icon_list.svg') no-repeat center center;
+  background: url('/images/icon_list.svg') no-repeat center center;
   display: none;
   cursor: pointer;
 }
@@ -221,15 +221,15 @@ body {
   display: inline-flex;
 }
 
-.arrow-right {
-  background: url('images/arrow-left.svg') no-repeat center center;
-  transform: scale(-1, 1);
-}
+/*.arrow-right {*/
+  /*background: url('images/arrow-left.svg') no-repeat center center;*/
+  /*transform: scale(-1, 1);*/
+/*}*/
 
-.arrow-right__active {
-  background: url('images/arrow-left__active.svg') no-repeat center center;
-  cursor: pointer;
-}
+/*.arrow-right__active {*/
+  /*background: url('images/arrow-left__active.svg') no-repeat center center;*/
+  /*cursor: pointer;*/
+/*}*/
 
 .button {
   border-radius: var(--button-border-radius);

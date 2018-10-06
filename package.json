@@ -2,9 +2,10 @@
   "name": "shri-18-smarthouse-task-1",
   "version": "1.0.0",
   "description": "homework-1",
-  "main": "index.js",
+  "main": "public/js/index.js",
   "scripts": {
-    "test": "test"
+    "watch": "webpack --watch",
+    "build": "webpack --mode production"
   },
   "repository": {
     "type": "git",
@@ -21,7 +22,18 @@
   "homepage": "https://apanichkina.github.io/shri-18-smarthouse-task-1/",
   "dependencies": {},
   "devDependencies": {
+    "css-hot-loader": "^1.4.2",
+    "css-loader": "^1.0.0",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "file-loader": "^1.1.11",
+    "postcss-import": "^12.0.0",
+    "postcss-loader": "^3.0.0",
+    "postcss-nested": "^4.1.0",
+    "postcss-preset-env": "^6.0.10",
+    "style-loader": "^0.23.0",
     "stylelint": "^9.6.0",
-    "stylelint-config-standard": "^18.2.0"
+    "stylelint-config-standard": "^18.2.0",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2"
   }
 }

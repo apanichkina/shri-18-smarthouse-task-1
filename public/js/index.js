@@ -1,3 +1,5 @@
+import '../css/index.css';
+
 const data = {
   "events": [
     {
@@ -159,7 +161,7 @@ const data = {
   ]
 };
 
-const IMAGE_PATH = 'images/icons/';
+const IMAGE_PATH = '/images/icons/';
 
 function fillCardDataEl(type, data) {
   const template = document.getElementsByTagName("template")[0];
