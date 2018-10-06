@@ -25,7 +25,7 @@
     "css-hot-loader": "^1.4.2",
     "css-loader": "^1.0.0",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
-    "file-loader": "^1.1.11",
+    "postcss-extend": "^1.0.5",
     "postcss-import": "^12.0.0",
     "postcss-loader": "^3.0.0",
     "postcss-nested": "^4.1.0",
@@ -33,6 +33,7 @@
     "style-loader": "^0.23.0",
     "stylelint": "^9.6.0",
     "stylelint-config-standard": "^18.2.0",
+    "url-loader": "^1.1.1",
     "webpack": "^4.20.2",
     "webpack-cli": "^3.1.2"
   }
