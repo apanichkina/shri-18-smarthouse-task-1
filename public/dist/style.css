@@ -11,12 +11,12 @@ html, body {
   line-height: 42px;
 }
 
-.text_xxl, .content__title, .card__title-block, .card__body {
+.text_xxl, .content__title, .card__title-block, .card_l > .card__body {
   font-size: 24px;
   line-height: 28px;
 }
 
-.text_xl, .button {
+.text_xl, .card__body, .button {
   font-size: 20px;
   line-height: 23px;
 }
@@ -42,10 +42,6 @@ html, body {
 }
 
 :root {
-  --card-space: 15px;
-  --card-space-main: 20px;
-  --color-white-dark: #fefefe;
-
   --card-outer-space: 20px;
   --card-outer-space-m: 16px;
   --card-inner-padding: 20px;
@@ -68,7 +64,7 @@ html, body {
   --color-black: #333;
   --color-blur: rgba(51, 51, 51, 0.5);
   --icon-size: 52px;
-  --icon-size-small: 36px;
+  --icon-size-m: 36px;
 }
 
 * {
@@ -443,6 +439,11 @@ html, body {
   border-top-right-radius: var(--block-border-radius);
 }
 
+.card__header:only-child {
+  border-radius: 20px;
+  border-radius: var(--block-border-radius);
+}
+
 .card__header_red {
   background-color: #db5341;
   background-color: var(--color-valencia);
@@ -491,6 +492,11 @@ html, body {
   margin-top: var(--card-inner-padding-m);
 }
 
+.card__source {
+  padding-right: 20px;
+  padding-right: var(--card-inner-padding);
+}
+
 .card__body {
 
   height: 100%;
@@ -512,6 +518,28 @@ html, body {
   margin-left: 18px;
 }
 
+.indicators {
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.indicator {
+  white-space: nowrap;
+}
+
+.indicator:first-child {
+  padding-right: 20px;
+  padding-right: var(--card-inner-padding);
+}
+
+.indicators .indicator {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  margin-top: 20px;
+  margin-top: var(--card-inner-padding);
+}
+
 @media (max-width: 767px) {
   .card_m {
     grid-column: auto / span 2;
@@ -522,14 +550,22 @@ html, body {
   .card_l {
     grid-column: auto / span 2;
   }
-}
 
-@media (max-width: 375px) {
-  .card_m .controls, .card_s .controls {
+  .card_m .controls, .card_s .controls, .indicators {
     -webkit-box-pack: justify;
         -ms-flex-pack: justify;
             justify-content: space-between;
   }
+
+  .indicators .indicator {
+    -webkit-box-flex: 0;
+        -ms-flex: none;
+            flex: none;
+  }
+}
+
+@media (max-width: 375px) {
+
 }
 
 .icon-button {
