@@ -10,6 +10,26 @@ const INDICATOR_UNIT_RU = {
   'humidity': '%'
 };
 
+const SEC_PER_MIN = 60;
+
+function secToTime(seconds) {
+  const min = Math.floor(seconds / SEC_PER_MIN);
+  let sec = seconds % SEC_PER_MIN;
+
+  if (sec < 10) {
+    sec = `0${sec}`
+  }
+  return [min, sec].join(':')
+}
+
+function timeToSec(time) {
+  const timeParts = time.split(':');
+  const min = Number(timeParts[0]) * SEC_PER_MIN;
+  const sec = Number(timeParts[1]);
+
+  return min + sec
+}
+
 function fillIndicator(container, data) {
   const template = document.getElementsByTagName("template")[1];
   const indicatorTmpl =  template.content.querySelector(".indicator");
@@ -51,6 +71,40 @@ function fillCardDataEl(type, data) {
     fillIndicator(indicators, {key: 'humidity', value: data.humidity});
 
     result.push(indicators)
+  }
+
+
+  if (data.track && data.volume) {
+    const musicTmpl = template.content.querySelector(".music");
+    const music = document.importNode(musicTmpl, true);
+    const image = music.querySelector('.music__album-cover');
+    const name = music.querySelector('.music__name');
+    const volumeBar = music.querySelector('.music__volume-bar');
+    const volumeValue= music.querySelector('.music__volume-value');
+    const trackBar = music.querySelector('.music__track-bar');
+    const trackLength= music.querySelector('.music__track-length');
+
+    image.src = data.albumcover;
+    name.textContent =  [data.artist, data.track.name].join(' - ');
+    volumeBar.value = data.volume;
+    volumeValue.textContent = data.volume + '%';
+
+    volumeBar.addEventListener('input', (evt) => {
+      if (evt && evt.target) {
+        volumeValue.textContent = evt.target.value+ '%';
+      }
+    });
+
+    trackBar.value = timeToSec(data.track.length);
+    trackLength.textContent = data.track.length;
+
+    trackBar.addEventListener('input', (evt) => {
+      if (evt && evt.target) {
+        trackLength.textContent = secToTime(evt.target.value);
+      }
+    });
+
+    result.push(music)
   }
 
 

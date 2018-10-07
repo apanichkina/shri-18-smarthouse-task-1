@@ -1,4 +1,7 @@
 :root {
+  --volume-thumb-size: 16px;
+  --track-thumb-width: 12px;
+  --track-thumb-height: 20px;
   --card-outer-space: 20px;
   --card-outer-space-m: 16px;
   --card-inner-padding: 20px;

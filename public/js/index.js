@@ -19,5 +19,3 @@ document.addEventListener('DOMContentLoaded', () => {
   const root = document.getElementById('content__layout');
   setContent(root);
 });
-
-
