@@ -35,23 +35,44 @@
 
 .card__header {
   background-color: inherit;
-  padding: 14px 14px calc(14px + var(--block-border-radius));
+  padding: var(--card-inner-padding);
   border-top-left-radius: var(--block-border-radius);
   border-top-right-radius: var(--block-border-radius);
 }
 
-.card_red {
+.card__header_red {
   background-color: var(--color-valencia);
   color: var(--color-white);
+  padding: var(--card-inner-padding) var(--card-inner-padding) calc(var(--card-inner-padding) + var(--block-border-radius));
+}
+
+.card__title-block {
+  @extend .text_xxl;
+
+  align-items: center;
 }
 
 .card__icon {
   height: var(--icon-size);
   width: var(--icon-size);
+  margin-right: 16px;
 }
 
 .card__title {
-  @extend .text_xxl;
+  max-height: var(--icon-size);
+  overflow: hidden;
+}
+
+.card__subtitle-block {
+  @extend .text_l;
+
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.card__source,
+.card__time {
+  margin-top: var(--card-inner-padding-m);
 }
 
 .card__body {
@@ -61,7 +82,15 @@
   border-radius: var(--block-border-radius);
   margin-top: calc(-1 * var(--block-border-radius));
   background: inherit;
-  padding: 14px;
+  padding: var(--card-inner-padding);
+}
+
+.controls > .button:first-child {
+  background-color: var(--color-accent);
+}
+
+.controls > .button + .button {
+  margin-left: 18px;
 }
 
 @media (max-width: 767px) {

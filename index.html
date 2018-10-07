@@ -14,9 +14,15 @@
 <!-- TEMPLATES -->
 <template>
   <div class="card">
-    <div class="card__header row">
-      <img class="card__icon" src="" alt=""/>
-      <span class="card__title text_bold"></span>
+    <div class="card__header">
+      <div class="card__title-block row">
+        <img class="card__icon" src="" alt=""/>
+        <div class="card__title text_bold"></div>
+      </div>
+      <div class="card__subtitle-block row">
+        <span class="card__source"></span>
+        <span class="card__time"></span>
+      </div>
     </div>
     <div class="card__body">
 
@@ -37,7 +43,7 @@
             <a href="#" target="_blank"></a>
         </span>
     <button class="nav__button icon-button" type="button"></button>
-    <nav class="nav text__m text_bold">
+    <nav class="nav text_m text_bold">
       <ul class="nav-content">
         <li class="nav__tab nav__tab_active">
           События
@@ -54,10 +60,13 @@
       </ul>
     </nav>
   </header>
-  <main id="content" class="content container js-wrapper-block">
-    <!-- content -->
+  <main class="content container">
+    <div class="content__title text_bold">Лента событий</div>
+    <div id="content__layout" class="content__layout">
+      <!-- content -->
+    </div>
   </main>
-  <footer class="footer text_secondary text__xs container">
+  <footer class="footer text_secondary text_xs container">
     <div class="footer-content">
       <div class="footer-content__left">
         <span class="footer__link">
