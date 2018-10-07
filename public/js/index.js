@@ -24,10 +24,12 @@ function fillCardDataEl(type, data) {
 }
 
 function fillCard(card, content) {
-  const header = card.querySelector("div.card__header");
-  const title = card.querySelector("span.card__title");
-  const icon = card.querySelector("img.card__icon");
-  const body = card.querySelector("div.card__body");
+  const header = card.querySelector(".card__header");
+  const title = card.querySelector(".card__title");
+  const icon = card.querySelector(".card__icon");
+  const source = card.querySelector(".card__source");
+  const time = card.querySelector(".card__time");
+  const body = card.querySelector(".card__body");
   const isCritical = content.type === 'critical';
 
   if (isCritical) {
@@ -36,6 +38,8 @@ function fillCard(card, content) {
 
   icon.src = getIconSrc(content.icon, isCritical);
   title.textContent = content.title;
+  source.textContent = content.source;
+  time.textContent = content.time;
   body.textContent = content.description;
 
   if (content.data) {
@@ -63,7 +67,7 @@ function setContent(parentEl) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  const root = document.getElementById('content');
+  const root = document.getElementById('content__layout');
   setContent(root);
 });
 

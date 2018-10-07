@@ -55,14 +55,6 @@
   }
 }
 
-.controls > .button:first-child {
-  background-color: var(--color-accent);
-}
-
-.controls > .button + .button {
-  margin-left: 18px;
-}
-
 @media (max-width: 375px) {
   .button {
     height: 44px;
