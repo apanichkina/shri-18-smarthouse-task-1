@@ -47,12 +47,10 @@
 .card__header_red {
   background-color: var(--color-valencia);
   color: var(--color-white);
-  padding: var(--card-inner-padding) var(--card-inner-padding) calc(var(--card-inner-padding) + var(--block-border-radius));
+  padding-bottom: calc(var(--card-inner-padding) + var(--block-border-radius));
 }
 
 .card__title-block {
-  @extend .text_xxl;
-
   align-items: center;
 }
 
@@ -63,7 +61,8 @@
 }
 
 .card__title {
-  max-height: var(--icon-size);
+  @extend .text_xxl_2;
+
   overflow: hidden;
 }
 
@@ -92,6 +91,19 @@
   background: inherit;
   padding: var(--card-inner-padding);
 }
+
+/*.card__img-container {*/
+  /*width: 636px;*/
+  /*height: 316px;*/
+/*}*/
+
+/*.card__img {*/
+  /*background: url('../images/Richdata@2x.png') no-repeat center center;*/
+  /*height: 100%;*/
+  /*width: 100%;*/
+  /*object-fit: contain;*/
+/*}*/
+
 
 .card_l > .card__body {
   @extend .text_xxl;
