@@ -8,20 +8,26 @@
   margin-right: var(--card-inner-padding-m);
 }
 
-.music__track {
+.music__track-container {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.music__track-bar,
-.music__name {
-  flex: 1 1 auto;
+.music__track-bar {
+  height: 20px;
+}
+
+.music__controls-container {
+  margin-top: var(--card-inner-padding);
+  align-items: center;
 }
 
 .music__name {
   @extend .text_xl_1;
 
   overflow: hidden;
-  margin-bottom: var(--card-inner-padding-xs);
 }
 
 .music__track-length,
@@ -32,17 +38,16 @@
   text-align: right;
 }
 
+.music__track-length {
+  line-height: 20px;
+}
+
 .music__volume-value {
   line-height: var(--icon-size);
 }
 
-.music__volume {
-  display: block;
-  width: 427px;
-}
-
-.music__buttons {
-  margin-right: var(--card-inner-padding-xs);
+.music__volume-bar {
+  height: 36px;
 }
 
 .music__button {
@@ -60,153 +65,6 @@
   margin-left: var(--card-inner-padding);
 }
 
-.music .row + .row {
-  margin-top: var(--card-inner-padding);
+.music__button:last-of-type {
+  margin-right: var(--card-inner-padding-xs);
 }
-
-input[type=range] {
-  -webkit-appearance: none;
-  width: 100%;
-  background: transparent;
-}
-
-/* webkit input */
-
-input[type=range]::-webkit-slider-runnable-track {
-  cursor: pointer;
-  width: 100%;
-}
-
-input[type=range]::-webkit-slider-thumb {
-  cursor: pointer;
-  -webkit-appearance: none;
-}
-
-/* --- */
-
-/* mozilla input */
-
-input[type=range]::-moz-focus-outer {
-  border: 0;
-}
-
-input[type=range]::-moz-range-track {
-  cursor: pointer;
-}
-
-input[type=range]::-moz-range-thumb {
-  cursor: pointer;
-  -webkit-appearance: none;
-}
-
-/* --- */
-
-input[type=range]:focus {
-  outline: 0;
-}
-
-/* webkit preudoelements */
-
-.music__volume-bar::-webkit-slider-runnable-track {
-  height: 4px;
-  background: rgba(216, 216, 216, 0.6);
-  border-radius: 2px;
-}
-
-.music__volume-bar::-webkit-slider-thumb {
-  height: var(--volume-thumb-size);
-  width: var(--volume-thumb-size);
-  margin-top: calc(-0.5 * var(--volume-thumb-size) + 2px);
-  border: 0;
-  border-radius: 50%;
-  background: #605757;
-}
-
-.music__track-bar::-webkit-slider-runnable-track {
-  height: 1px;
-  background: #979797;
-}
-
-.music__track-bar::-webkit-slider-thumb {
-  height: var(--track-thumb-height);
-  width: var(--track-thumb-width);
-  margin-top: calc(-0.5 * var(--track-thumb-height) + 1px);
-  background: #d8d8d8;
-  border: 0;
-  border-radius: 5px;
-}
-
-/* --- */
-
-/* mozilla pseudoelements */
-.music__volume-bar::-moz-range-track {
-  height: 4px;
-  background: rgba(216, 216, 216, 0.6);
-  border-radius: 2px;
-}
-
-.music__volume-bar::-moz-range-thumb {
-  height: var(--volume-thumb-size);
-  width: var(--volume-thumb-size);
-  margin-top: calc(-0.5 * var(--volume-thumb-size) + 2px);
-  border: 0;
-  border-radius: 50%;
-  background: #605757;
-}
-
-.music__track-bar::-moz-range-track {
-  height: 1px;
-  background: #979797;
-}
-
-.music__track-bar::-moz-range-thumb {
-  height: var(--track-thumb-height);
-  width: var(--track-thumb-width);
-  margin-top: calc(-0.5 * var(--track-thumb-height) + 1px);
-  background: #d8d8d8;
-  border: 0;
-  border-radius: 5px;
-}
-
-/* --- */
-
-/* Edge pseudoelements */
-.music__track-bar::-ms-track {
-  height: 1px;
-  background: #979797;
-  cursor: pointer;
-  border-color: transparent;
-  color: transparent;
-}
-
-/*.music__track-bar::-ms-fill-lower {*/
-  /*background: #194620;*/
-  /*border: 1.1px solid #18d501;*/
-  /*border-radius: 2px;*/
-  /*box-shadow: 0.9px 0.9px 1.7px #002200, 0px 0px 0.9px #003c00;*/
-/*}*/
-
-/*.music__track-bar::-ms-fill-upper {*/
-  /*background: #205928;*/
-  /*border: 1.1px solid #18d501;*/
-  /*border-radius: 2px;*/
-  /*box-shadow: 0.9px 0.9px 1.7px #002200, 0px 0px 0.9px #003c00;*/
-/*}*/
-
-.music__track-bar::-ms-thumb {
-  height: var(--track-thumb-height);
-  width: var(--track-thumb-width);
-  margin-top: calc(-0.5 * var(--track-thumb-height) + 1px);
-  background: #d8d8d8;
-  border: 0;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-/*.music__track-bar:focus::-ms-fill-lower {*/
-  /*background: #205928;*/
-/*}*/
-
-/*.music__track-bar:focus::-ms-fill-upper {*/
-  /*background: #276c30;*/
-/*}*/

@@ -723,6 +723,9 @@ html, body {
 .music__controls-container {
   margin-top: 20px;
   margin-top: var(--card-inner-padding);
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .music__name {
@@ -745,9 +748,8 @@ html, body {
   line-height: var(--icon-size);
 }
 
-.music__volume {
-  display: block;
-  width: 427px;
+.music__volume-bar {
+  height: 36px;
 }
 
 .music__button {
@@ -784,19 +786,21 @@ input[type=range] {
   padding: 0;
 }
 
-input[type='range']::-ms-tooltip {
-  display: none;
-}
-
 /* webkit input */
 
 input[type=range]::-webkit-slider-runnable-track {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   cursor: pointer;
+  border: none;
   width: 100%;
 }
 
 input[type=range]::-webkit-slider-thumb {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   cursor: pointer;
+  border: none;
   -webkit-appearance: none;
 }
 
@@ -809,12 +813,36 @@ input[type=range]::-moz-focus-outer {
 }
 
 input[type=range]::-moz-range-track {
+  box-sizing: border-box;
   cursor: pointer;
+  border: none;
 }
 
 input[type=range]::-moz-range-thumb {
+  box-sizing: border-box;
   cursor: pointer;
+  border: none;
   -webkit-appearance: none;
+}
+
+/* --- */
+
+/* Edge input */
+
+input[type='range']::-ms-track {
+  box-sizing: border-box;
+  cursor: pointer;
+  border: none;
+}
+
+input[type='range']::-ms-thumb {
+  box-sizing: border-box;
+  margin-top: 0;
+  border: none;
+}
+
+[type='range']::-ms-tooltip {
+  display: none;
 }
 
 /* --- */
@@ -833,12 +861,8 @@ input[type=range]:focus {
 
 .music__volume-bar::-webkit-slider-thumb {
   height: 16px;
-  height: var(--volume-thumb-size);
   width: 16px;
-  width: var(--volume-thumb-size);
   margin-top: calc(-0.5 * 16px + 2px);
-  margin-top: calc(-0.5 * var(--volume-thumb-size) + 2px);
-  border: 0;
   border-radius: 50%;
   background: #605757;
 }
@@ -850,13 +874,9 @@ input[type=range]:focus {
 
 .music__track-bar::-webkit-slider-thumb {
   height: 20px;
-  height: var(--track-thumb-height);
   width: 12px;
-  width: var(--track-thumb-width);
   margin-top: calc(-0.5 * 20px + 1px);
-  margin-top: calc(-0.5 * var(--track-thumb-height) + 1px);
   background: #d8d8d8;
-  border: 0;
   border-radius: 5px;
 }
 
@@ -872,12 +892,8 @@ input[type=range]:focus {
 
 .music__volume-bar::-moz-range-thumb {
   height: 16px;
-  height: var(--volume-thumb-size);
   width: 16px;
-  width: var(--volume-thumb-size);
   margin-top: calc(-0.5 * 16px + 2px);
-  margin-top: calc(-0.5 * var(--volume-thumb-size) + 2px);
-  border: 0;
   border-radius: 50%;
   background: #605757;
 }
@@ -889,13 +905,9 @@ input[type=range]:focus {
 
 .music__track-bar::-moz-range-thumb {
   height: 20px;
-  height: var(--track-thumb-height);
   width: 12px;
-  width: var(--track-thumb-width);
   margin-top: calc(-0.5 * 20px + 1px);
-  margin-top: calc(-0.5 * var(--track-thumb-height) + 1px);
   background: #d8d8d8;
-  border: 0;
   border-radius: 5px;
 }
 
@@ -903,44 +915,35 @@ input[type=range]:focus {
 
 /* Edge pseudo-elements */
 
-.music__track-bar::-ms-track {
-  height: 1px;
-  background: #979797;
-  cursor: pointer;
-  border: none;
-  color: transparent;
-}
-
-.music__track-bar[type='range']::-ms-thumb {
-  box-sizing: border-box;
-  border: none;
-  height: 20px;
-  width: 12px;
-  margin-top: 0;
-  background: #d8d8d8;
-  border-radius: 5px;
-}
-
 .music__volume-bar::-ms-track {
-  box-sizing: border-box;
-  border: none;
   height: 4px;
   background: rgba(216, 216, 216, 0.6);
   border-radius: 2px;
-  cursor: pointer;
 }
 
 .music__volume-bar[type='range']::-ms-thumb {
-  box-sizing: border-box;
-  border: none;
   height: 16px;
   width: 16px;
+  margin-top: calc(-0.5 * 16px + 2px);
   border-radius: 50%;
   background: #605757;
+
+  margin-top: 0;
 }
 
-[type='range']::-ms-tooltip {
-  display: none;
+.music__track-bar::-ms-track {
+  height: 1px;
+  background: #979797;
+}
+
+.music__track-bar[type='range']::-ms-thumb {
+  height: 20px;
+  width: 12px;
+  margin-top: calc(-0.5 * 20px + 1px);
+  background: #d8d8d8;
+  border-radius: 5px;
+
+  margin-top: 0;
 }
 
 .camera {
