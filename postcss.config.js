@@ -2,7 +2,9 @@ module.exports = {
   ident: 'postcss',
   plugins: {
     'postcss-import': {},
+    'postcss-mixins': {},
     'postcss-extend': {},
+    'postcss-property-lookup': {},
     'postcss-nested': {},
     'postcss-preset-env': {
       features: {

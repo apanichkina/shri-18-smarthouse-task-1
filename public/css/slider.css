@@ -1,0 +1,158 @@
+@define-mixin volumeTrack {
+  height: 4px;
+  background: rgba(216, 216, 216, 0.6);
+  border-radius: 2px;
+}
+
+@define-mixin volumeThumb {
+  height: 16px;
+  width: @height;
+  margin-top: calc(-0.5 * @height + 2px);
+  border-radius: 50%;
+  background: #605757;
+}
+
+@define-mixin trackTrack {
+  height: 1px;
+  background: #979797;
+}
+
+@define-mixin trackThumb {
+  height: 20px;
+  width: 12px;
+  margin-top: calc(-0.5 * @height + 1px);
+  background: #d8d8d8;
+  border-radius: 5px;
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+/* webkit input */
+
+input[type=range]::-webkit-slider-runnable-track {
+  box-sizing: border-box;
+  cursor: pointer;
+  border: none;
+  width: 100%;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  box-sizing: border-box;
+  cursor: pointer;
+  border: none;
+  -webkit-appearance: none;
+}
+
+/* --- */
+
+/* mozilla input */
+
+input[type=range]::-moz-focus-outer {
+  border: 0;
+}
+
+input[type=range]::-moz-range-track {
+  box-sizing: border-box;
+  cursor: pointer;
+  border: none;
+}
+
+input[type=range]::-moz-range-thumb {
+  box-sizing: border-box;
+  cursor: pointer;
+  border: none;
+  -webkit-appearance: none;
+}
+
+/* --- */
+
+/* Edge input */
+
+input[type='range']::-ms-track {
+  box-sizing: border-box;
+  cursor: pointer;
+  border: none;
+}
+
+input[type='range']::-ms-thumb {
+  box-sizing: border-box;
+  margin-top: 0;
+  border: none;
+}
+
+[type='range']::-ms-tooltip {
+  display: none;
+}
+
+/* --- */
+
+input[type=range]:focus {
+  outline: 0;
+}
+
+/* webkit preudo-elements */
+
+.music__volume-bar::-webkit-slider-runnable-track {
+  @mixin volumeTrack;
+}
+
+.music__volume-bar::-webkit-slider-thumb {
+  @mixin volumeThumb;
+}
+
+.music__track-bar::-webkit-slider-runnable-track {
+  @mixin trackTrack;
+}
+
+.music__track-bar::-webkit-slider-thumb {
+  @mixin trackThumb;
+}
+
+/* --- */
+
+/* mozilla pseudo-elements */
+.music__volume-bar::-moz-range-track {
+  @mixin volumeTrack;
+}
+
+.music__volume-bar::-moz-range-thumb {
+  @mixin volumeThumb;
+}
+
+.music__track-bar::-moz-range-track {
+  @mixin trackTrack;
+}
+
+.music__track-bar::-moz-range-thumb {
+  @mixin trackThumb;
+}
+
+/* --- */
+
+/* Edge pseudo-elements */
+
+.music__volume-bar::-ms-track {
+  @mixin volumeTrack;
+}
+
+.music__volume-bar[type='range']::-ms-thumb {
+  @mixin volumeThumb;
+
+  margin-top: 0;
+}
+
+.music__track-bar::-ms-track {
+  @mixin trackTrack;
+}
+
+.music__track-bar[type='range']::-ms-thumb {
+  @mixin trackThumb;
+
+  margin-top: 0;
+}
