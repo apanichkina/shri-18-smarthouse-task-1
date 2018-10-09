@@ -17,9 +17,22 @@ body {
   line-height: 28px;
 }
 
+.text_xxl_2 {
+  font-size: 24px;
+  line-height: 28px;
+  max-height: calc(2 * @line-height);
+}
+
 .text_xl {
   font-size: 20px;
   line-height: 23px;
+}
+
+.text_xl_1 {
+  font-size: 20px;
+  line-height: 23px;
+
+  max-height: @line-height;
 }
 
 .text_l {
