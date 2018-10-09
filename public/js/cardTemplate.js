@@ -1,4 +1,8 @@
 import getIconSrc from './icons'
+import {Chart} from "chart.js";
+
+const TEMPLATE = document.getElementsByTagName("template");
+
 
 const INDICATOR_NAME_RU = {
   'temperature': 'Температура',
@@ -44,8 +48,10 @@ function fillIndicator(container, data) {
 
 }
 
+
+
 function fillCardDataEl(type, data) {
-  const template = document.getElementsByTagName("template")[1];
+  const template = TEMPLATE[1];
   const result = [];
 
   if (data.buttons) {
@@ -107,6 +113,17 @@ function fillCardDataEl(type, data) {
     result.push(music)
   }
 
+  if (data.image) {
+    const camTmpl = template.content.querySelector(".camera");
+    const cam = document.importNode(camTmpl, true);
+    result.push(cam)
+  }
+
+  if (data.type === 'graph') {
+    const chartTmpl = template.content.querySelector(".chart-container");
+    const chart = document.importNode(chartTmpl, true);
+    result.push(chart)
+  }
 
   return result
 }
@@ -126,6 +143,7 @@ export default function fillCard(card, content) {
 
   icon.src = getIconSrc(content.icon, isCritical);
   title.textContent = content.title;
+  title.title = content.title;
   source.textContent = content.source;
   time.textContent = content.time;
 
@@ -133,7 +151,8 @@ export default function fillCard(card, content) {
     // nothing for fill card body
     body.parentNode.removeChild(body);
   } else {
-    body.textContent = content.description;
+    const description = body.querySelector(".card__description");
+    description.textContent = content.description;
 
     if (content.data) {
       const cardDataEl = fillCardDataEl(content.icon, content.data) || [];
@@ -143,7 +162,68 @@ export default function fillCard(card, content) {
       }
     }
 
+    const chrtContainer = document.getElementById("chart");
+    if (chrtContainer) {
+
+      const ctx = chrtContainer.getContext('2d');
+
+      // TODO destroy chart
+      var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          datasets: [{
+            label: 'electricity',
+            data: [
+              {x:"1536883200", y: 115},
+              {x:"1536969600", y: 117},
+            ],
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+            ],
+            borderColor: [
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+          },
+            {
+              label: 'water',
+              data: [
+                {x:"1536883200", y: 40},
+                {x:"1536969600", y: 40.2},
+              ],
+              backgroundColor: [
+                'rgba(75, 192, 192, 0.2)',
+              ],
+              borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 1
+            }]
+        },
+        options: {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          }
+        }
+      });
+    }
+
   }
+
 
   card.classList.add(`card_${content.size}`);
 }

@@ -11,27 +11,48 @@ html, body {
   line-height: 42px;
 }
 
-.text_xxl, .content__title, .card_l > .card__body {
+.text_xxl, .text_xxl_2, .content__title, .card__title, .card_l > .card__body {
   font-size: 24px;
   line-height: 28px;
 }
 
 .text_xxl_2, .card__title {
-  font-size: 24px;
-  line-height: 28px;
-  max-height: calc(2 * 28px);
+
+  overflow: hidden;
+
+  display: block;
+
+  display: -webkit-box;
+
+  -webkit-line-clamp: 2;
+
+  -webkit-box-orient: vertical;
+
+  text-overflow: ellipsis;
+
+  max-height: calc(28px * 2);
 }
 
-.text_xl, .card__body, .button {
+.text_xl, .text_xl_1, .card__body, .button, .music__name {
   font-size: 20px;
   line-height: 23px;
 }
 
 .text_xl_1, .music__name {
-  font-size: 20px;
-  line-height: 23px;
 
-  max-height: 23px;
+  overflow: hidden;
+
+  display: block;
+
+  display: -webkit-box;
+
+  -webkit-line-clamp: 1;
+
+  -webkit-box-orient: vertical;
+
+  text-overflow: ellipsis;
+
+  max-height: calc(23px * 1);
 }
 
 .text_l, .card, .card__subtitle-block {
@@ -135,12 +156,6 @@ html, body {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-}
-
-.ellipsis {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
 }
 
 .text_secondary {
@@ -412,8 +427,6 @@ html, body {
 
 .card {
 
-  /*width: 200px;*/
-  /*height: 120px;*/
   width: auto;
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
@@ -494,11 +507,6 @@ html, body {
   margin-right: 16px;
 }
 
-.card__title {
-
-  overflow: hidden;
-}
-
 .card__subtitle-block {
 
   -webkit-box-pack: justify;
@@ -530,27 +538,21 @@ html, body {
   background: inherit;
   padding: 20px;
   padding: var(--card-inner-padding);
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 
-/*.card__img-container {*/
+.card__description {
 
-/*width: 636px;*/
-
-/*height: 316px;*/
-
-/*}*/
-
-/*.card__img {*/
-
-/*background: url('../images/Richdata@2x.png') no-repeat center center;*/
-
-/*height: 100%;*/
-
-/*width: 100%;*/
-
-/*object-fit: contain;*/
-
-/*}*/
+}
 
 .controls > .button:first-child {
   background-color: #ffd93e;

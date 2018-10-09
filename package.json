@@ -22,6 +22,7 @@
   "homepage": "https://apanichkina.github.io/shri-18-smarthouse-task-1/",
   "dependencies": {},
   "devDependencies": {
+    "chart.js": "^2.7.2",
     "css-hot-loader": "^1.4.2",
     "css-loader": "^1.0.0",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",

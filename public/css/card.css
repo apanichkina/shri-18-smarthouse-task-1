@@ -1,8 +1,6 @@
 .card {
   @extend .text_l;
 
-  /*width: 200px;*/
-  /*height: 120px;*/
   width: auto;
   display: inline-flex;
   flex-direction: column;
@@ -62,8 +60,6 @@
 
 .card__title {
   @extend .text_xxl_2;
-
-  overflow: hidden;
 }
 
 .card__subtitle-block {
@@ -90,20 +86,14 @@
   margin-top: calc(-1 * var(--block-border-radius));
   background: inherit;
   padding: var(--card-inner-padding);
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
 }
 
-/*.card__img-container {*/
-  /*width: 636px;*/
-  /*height: 316px;*/
-/*}*/
+.card__description {
 
-/*.card__img {*/
-  /*background: url('../images/Richdata@2x.png') no-repeat center center;*/
-  /*height: 100%;*/
-  /*width: 100%;*/
-  /*object-fit: contain;*/
-/*}*/
-
+}
 
 .card_l > .card__body {
   @extend .text_xxl;
