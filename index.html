@@ -48,12 +48,24 @@
   </span>
 
   <div class="music">
-    <img class="music__album-cover" src="" alt=""/>
-    <div class="music__name"></div>
-    <input type="range" class="music__track-bar" title="volume" min="0" max="800" value="20" step="1">
-    <span class="music__track-length"></span>
-    <input type="range" class="music__volume-bar" title="volume" min="0" max="100" value="20" step="1">
-    <span class="music__volume-value"></span>
+    <div class="row">
+      <img class="music__album-cover" src="" alt=""/>
+      <div class="music__track">
+        <div class="music__name"></div>
+        <div class="row">
+          <input type="range" class="music__track-bar" title="volume" min="0" max="800" value="20" step="1">
+          <span class="music__track-length"></span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="music__buttons row">
+        <div class="music__button music__button_left"></div>
+        <div class="music__button"></div>
+      </div>
+      <input type="range" class="music__volume-bar" title="volume" min="0" max="100" value="20" step="1">
+      <span class="music__volume-value"></span>
+    </div>
   </div>
 </template>
 
