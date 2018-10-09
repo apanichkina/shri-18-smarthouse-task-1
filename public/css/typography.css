@@ -1,3 +1,13 @@
+@define-mixin multilineEllipsis $line-height, $lineCount: 1 {
+  overflow: hidden;
+  display: block;
+  display: -webkit-box;
+  -webkit-line-clamp: $(lineCount);
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  max-height: calc($(line-height) * $(lineCount));
+}
+
 html,
 body {
   font: 14px/16px YandexSans, Arial, Helvetica, sans-serif;
@@ -18,9 +28,9 @@ body {
 }
 
 .text_xxl_2 {
-  font-size: 24px;
-  line-height: 28px;
-  max-height: calc(2 * @line-height);
+  @extend .text_xxl;
+
+  @mixin multilineEllipsis 28px, 2;
 }
 
 .text_xl {
@@ -29,10 +39,9 @@ body {
 }
 
 .text_xl_1 {
-  font-size: 20px;
-  line-height: 23px;
+  @extend .text_xl;
 
-  max-height: @line-height;
+  @mixin multilineEllipsis 23px, 1;
 }
 
 .text_l {
