@@ -55,8 +55,14 @@
   }
 }
 
-@media (max-width: 375px) {
+@media (--less-than-575-viewport) {
   .button {
     height: 44px;
+  }
+}
+
+@media (--less-than-375-viewport) {
+  .button {
+    width: 100%;
   }
 }

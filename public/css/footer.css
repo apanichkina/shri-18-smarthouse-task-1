@@ -42,7 +42,7 @@
   }
 }
 
-@media (max-width: 575px) {
+@media (--less-than-575-viewport) {
   .footer-content {
     flex-direction: column;
     align-items: start;
