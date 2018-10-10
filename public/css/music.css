@@ -1,3 +1,7 @@
+.music {
+  margin-top: var(--card-inner-padding);
+}
+
 .music__album-cover {
   display: block;
   width: var(--icon-size);
@@ -36,6 +40,7 @@
 
   min-width: 44px;
   text-align: right;
+  color: rgba(161, 161, 161, 0.84);
 }
 
 .music__track-length {
@@ -51,7 +56,6 @@
 }
 
 .music__button {
-  background: url('../images/rewind.svg') no-repeat center center;
   width: var(--icon-size);
   height: @width;
   flex: 0 0 auto;
@@ -67,4 +71,21 @@
 
 .music__button:last-of-type {
   margin-right: var(--card-inner-padding-xs);
+}
+
+@media (--less-than-788-viewport) {
+  .music__name {
+    @extend .text_l_1;
+  }
+}
+
+@media (--less-than-375-viewport) {
+  .music__button {
+    width: var(--icon-size-m);
+    height: @width;
+  }
+
+  .music__button + .music__button {
+    margin-left: var(--card-inner-padding-m);
+  }
 }

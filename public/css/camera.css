@@ -3,4 +3,5 @@
   height: 316px;
   border-radius: var(--block-border-radius);
   background: url('../images/image.jpg') no-repeat center center;
+  margin-top: var(--card-inner-padding);
 }

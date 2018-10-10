@@ -49,6 +49,12 @@ body {
   line-height: 21px;
 }
 
+.text_l_1 {
+  @extend .text_l;
+
+  @mixin multilineEllipsis 21px, 1;
+}
+
 .text_m {
   font-size: 16px;
   line-height: 20px;
@@ -57,6 +63,12 @@ body {
 .text_s {
   font-size: 14px;
   line-height: 17px;
+}
+
+.text_s_2 {
+  @extend .text_s;
+
+  @mixin multilineEllipsis 17px, 2;
 }
 
 .text_xs {
