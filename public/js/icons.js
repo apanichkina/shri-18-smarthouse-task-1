@@ -10,12 +10,6 @@ import router from '../images/icons/router.svg'
 import stats from '../images/icons/stats.svg';
 import thermal from '../images/icons/thermal.svg';
 
-import album_cover_default from '../images/album_cover_default.png';
-
-export function getAlbumCover() {
-
-}
-
 export default function getCardIconSrc(type, needWhite) {
   let src = '';
 
