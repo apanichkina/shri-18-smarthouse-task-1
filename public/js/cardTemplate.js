@@ -48,8 +48,6 @@ function fillIndicator(container, data) {
 
 }
 
-
-
 function fillCardDataEl(type, data) {
   const template = TEMPLATE[1];
   const result = [];
@@ -160,66 +158,6 @@ export default function fillCard(card, content) {
       for (let i = 0; i < cardDataEl.length; i++) {
         body.appendChild(cardDataEl[i])
       }
-    }
-
-    const chrtContainer = document.getElementById("chart");
-    if (chrtContainer) {
-
-      const ctx = chrtContainer.getContext('2d');
-
-      // TODO destroy chart
-      var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          datasets: [{
-            label: 'electricity',
-            data: [
-              {x:"1536883200", y: 115},
-              {x:"1536969600", y: 117},
-            ],
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-            ],
-            borderColor: [
-              'rgba(255,99,132,1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-          },
-            {
-              label: 'water',
-              data: [
-                {x:"1536883200", y: 40},
-                {x:"1536969600", y: 40.2},
-              ],
-              backgroundColor: [
-                'rgba(75, 192, 192, 0.2)',
-              ],
-              borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-              ],
-              borderWidth: 1
-            }]
-        },
-        options: {
-          scales: {
-            yAxes: [{
-              ticks: {
-                beginAtZero:true
-              }
-            }]
-          }
-        }
-      });
     }
 
   }

@@ -1130,4 +1130,12 @@ input[type=range]:focus {
 .chart-container {
   margin-top: 16px;
   margin-top: var(--card-inner-padding-m);
+  position: relative;
+  max-width: 420px;
+}
+
+@media (max-width: 470px) {
+  .chart-container {
+    max-width: 250px;
+  }
 }

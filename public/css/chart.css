@@ -1,3 +1,11 @@
 .chart-container {
   margin-top: var(--card-inner-padding-m);
+  position: relative;
+  max-width: 420px;
+}
+
+@media (--less-than-470-viewport) {
+  .chart-container {
+    max-width: 250px;
+  }
 }

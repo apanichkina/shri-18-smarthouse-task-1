@@ -35,6 +35,7 @@
 @custom-media --less-than-768-viewport (max-width: 768px);
 @custom-media --less-than-720-viewport (max-width: 720px);
 @custom-media --less-than-575-viewport (max-width: 670px);
+@custom-media --less-than-470-viewport (max-width: 470px);
 @custom-media --less-than-375-viewport (max-width: 375px);
 
 * {
@@ -153,3 +154,4 @@ body {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
