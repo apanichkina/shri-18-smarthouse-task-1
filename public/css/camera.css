@@ -6,8 +6,6 @@
   touch-action: none;
   user-select: none;
   overflow: hidden;
-  /*background: url('../images/image.jpg') no-repeat center center;*/
-  /*background-position: 0 0;*/
 }
 
 .camera img {
@@ -17,4 +15,6 @@
   touch-action: none;
   user-select: none;
   height: 316px;
+  /*background: url('../images/diningroom2.jpg') no-repeat center center;*/
+  /*background-position: 0 0;*/
 }
