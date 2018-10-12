@@ -4,6 +4,36 @@ const PROPS_CLIENT_XY = ['clientX', 'clientY'];
 
 // helpers
 
+function throttle(func, ms) {
+  // https://learn.javascript.ru/task/throttle
+  let isThrottled = false,
+    savedArgs,
+    savedThis;
+
+  function wrapper() {
+
+    if (isThrottled) { // (2)
+      savedArgs = arguments;
+      savedThis = this;
+      return;
+    }
+
+    func.apply(this, arguments); // (1)
+
+    isThrottled = true;
+
+    setTimeout(function() {
+      isThrottled = false; // (3)
+      if (savedArgs) {
+        wrapper.apply(savedThis, savedArgs);
+        savedArgs = savedThis = null;
+      }
+    }, ms);
+  }
+
+  return wrapper;
+}
+
 function getAngle(p1, p2, props) {
   if (!props) {
     props = PROPS_XY;
@@ -81,18 +111,23 @@ function getScale(start, end) {
     const scaleValue = dScale || scale;
     const xValue = startPositionX + dX;
     const yValue = startPositionY + dY;
-    const translate3d = `translate3d(${xValue}px, ${scaleValue !== 1 ? yValue : 0}px, 0)`;
+
+    const translate3d = `translate3d(${xValue}px, ${yValue}px, 0)`;
     const scaleTransform= `scale(${scaleValue})`;
+
+    this.el.style.transform = translate3d + scaleTransform;
+
+
 
     this.nodeState = {
       ...this.nodeState,
       scale: scaleValue,
-      startPositionX: xValue,
-      startPositionY: yValue,
+      startPositionX:  xValue,
+      startPositionY:  yValue,
     };
 
 
-    this.el.style.transform = translate3d + scaleTransform;
+
 
 
     // const validPositionX = Math.max(Math.min(newPositionX, 0), this.paretnClientRect.width - this.el.getBoundingClientRect().width);
@@ -105,16 +140,10 @@ function getScale(start, end) {
     //   this.nodeState.startPositionX = scaledPositionX;
     //   this.nodeState.startPositionY = startPositionY;
     // }
-
-
-    // const validPositionX = Math.max(Math.min(newPositionX, 0), this.paretnClientRect.width - this.el.getBoundingClientRect().width);
-
-    console.log(this.el.getBoundingClientRect())
-
   }
 
   onPointerDown(event) {
-    if (!this.baseClientRect) {
+    if (!this.elClientRect) {
       this.elClientRect = this.el.getBoundingClientRect();
       this.paretnClientRect = this.parent.getBoundingClientRect();
     }
@@ -133,7 +162,7 @@ function getScale(start, end) {
       prevTs: Date.now(),
     };
 
-    console.log(event.type);
+    // console.log(event.type);
   }
 
   onPointerMove(event) {
@@ -150,7 +179,7 @@ function getScale(start, end) {
       }
     }
 
-    this.selectEvent();
+    this.selectEvent(event);
   }
 
   onPointerLeave(event) {
@@ -168,7 +197,7 @@ function getScale(start, end) {
   }
 
 
-  checkSwipe() {
+  checkSwipe(event) {
     console.log(event.type, 'swipe');
 
     const {prevX, prevY} = this.currentGesture;
@@ -187,7 +216,7 @@ function getScale(start, end) {
 
   }
 
-  checkRotate() {
+  checkRotate(event) {
     console.log(event.type, 'rotate');
 
     if (!this.firstMulti.length) {
@@ -208,7 +237,7 @@ function getScale(start, end) {
     return true
   }
 
-  checkPinch() {
+  checkPinch(event) {
     console.log(event.type, 'pinch');
 
     if (!this.firstMulti.length) {
@@ -221,18 +250,18 @@ function getScale(start, end) {
     return true
   }
 
-  selectEvent() {
+  selectEvent(event) {
     if (!this.pointers.length) {
       return
     }
 
     if (this.pointers.length === 1) {
-      this.checkSwipe();
+      this.checkSwipe(event);
     } else {
-      const hasRotate = this.checkRotate();
+      const hasRotate = this.checkRotate(event);
 
       if (!hasRotate) {
-        this.checkPinch();
+        this.checkPinch(event);
       }
     }
   }
@@ -243,12 +272,12 @@ function getScale(start, end) {
     this.updateFilter(dBrightness);
     this.updateTransform(0, 0, null);
 
-    this.el.addEventListener('pointerdown', this.onPointerDown.bind(this));
-    this.el.addEventListener('pointermove', this.onPointerMove.bind(this));
-    this.el.addEventListener('pointerleave', this.onPointerLeave.bind(this));
+    this.el.addEventListener('pointerdown', throttle(this.onPointerDown, 100).bind(this));
+    this.el.addEventListener('pointermove', throttle(this.onPointerMove, 150).bind(this));
+    this.el.addEventListener('pointerleave', throttle(this.onPointerLeave, 100).bind(this));
 
     this.el.addEventListener('gotpointercapture', (event) => {
-      // console.log(event.type);
+      // se.log(event.type);
     });
 
     this.el.addEventListener('lostpointercapture', (event) => {
