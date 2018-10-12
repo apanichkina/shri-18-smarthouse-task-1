@@ -1,7 +1,8 @@
 import '../css/index.css';
-import data from '../mocks/events.json'
+import data from '../mocks/events.js'
 import fillCard from './cardTemplate'
 import {Chart} from "chart.js";
+import {InteractiveElement} from './pointer'
 
 const chartBackgroundColor = {
   'water': 'rgba(54, 162, 235, 0.2)',
@@ -41,7 +42,6 @@ function prepareDataForChart(data) {
 }
 
 function drawChart(container, data) {
-  console.log('fff', data)
   const ctx = container.getContext('2d');
 
   // TODO destroy chart
@@ -86,14 +86,35 @@ function setContent(parentEl) {
 
 
     if (content[i].data && content[i].data.type === 'graph') {
-      const chartContainer = document.getElementById('chart')
-      const parsedData = prepareDataForChart(content[i].data.values)
+      const chartContainer = document.getElementById('chart');
+      const parsedData = prepareDataForChart(content[i].data.values);
 
       if (parsedData.length && chartContainer) {
         drawChart(chartContainer, parsedData)
       }
     }
   }
+
+  const camera = document.getElementById('camera');
+  if (!window.PointerEvent) {
+    // traditional touch/mouse event handlers
+    camera.addEventListener('touchstart', function (e) {
+      // prevent compatibility mouse events and click
+      e.preventDefault();
+      console.log('touchstart camera');
+
+    });
+
+    camera.addEventListener('mousedown', function (e) {
+      console.log('mousedown camera');
+    });
+
+
+  } else {
+    const cameraProcessor = new InteractiveElement(camera)
+
+  }
+
 }
 
 document.addEventListener('DOMContentLoaded', () => {
