@@ -71,25 +71,28 @@ function getScale(start, end) {
   }
 
   // change scale and position of this.el
-  updateTransform(translateNew, scaleNew) {
+  updateTransform(dX, dY, dScale) {
+    console.log('updateTransform', dX, dY, dScale);
     const {
-      startPositionX = this.nodeState.startPositionX,
-      startPositionY = this.nodeState.startPositionY,
-    } = translateNew;
-    const scaleValue = scaleNew || this.nodeState.scale;  // Math.max((scaleNew || this.nodeState.scale), 1);
-    const translate3d = `translate3d(${startPositionX}px, ${startPositionY}px, 0)`;
-    const scale = `scale(${scaleValue})`;
+      startPositionX,
+      startPositionY,
+      scale,
+    } = this.nodeState;
+    const scaleValue = dScale || scale;
+    const xValue = startPositionX + dX;
+    const yValue = startPositionY + dY;
+    const translate3d = `translate3d(${xValue}px, ${scaleValue !== 1 ? yValue : 0}px, 0)`;
+    const scaleTransform= `scale(${scaleValue})`;
 
     this.nodeState = {
       ...this.nodeState,
-      ...translateNew,
       scale: scaleValue,
-      startPositionX,
-      startPositionY
+      startPositionX: xValue,
+      startPositionY: yValue,
     };
 
 
-    this.el.style.transform = translate3d + scale;
+    this.el.style.transform = translate3d + scaleTransform;
 
 
     // const validPositionX = Math.max(Math.min(newPositionX, 0), this.paretnClientRect.width - this.el.getBoundingClientRect().width);
@@ -102,6 +105,9 @@ function getScale(start, end) {
     //   this.nodeState.startPositionX = scaledPositionX;
     //   this.nodeState.startPositionY = startPositionY;
     // }
+
+
+    // const validPositionX = Math.max(Math.min(newPositionX, 0), this.paretnClientRect.width - this.el.getBoundingClientRect().width);
 
     console.log(this.el.getBoundingClientRect())
 
@@ -166,15 +172,12 @@ function getScale(start, end) {
     console.log(event.type, 'swipe');
 
     const {prevX, prevY} = this.currentGesture;
-    const {startPositionX, startPositionY, scale} = this.nodeState;
+    const {startPositionX, startPositionY} = this.nodeState;
     const {x, y} = event;
     let dx = x - prevX;
     let dy = y - prevY;
-    const newPositionX = startPositionX + dx;
-    const newPositionY = startPositionY + dy;
 
-
-    this.updateTransform({startPositionX: newPositionX, startPositionY: newPositionY}, null);
+    this.updateTransform(dx, dy, null);
 
     const ts = Date.now();
 
@@ -213,7 +216,7 @@ function getScale(start, end) {
     }
 
     const scale = getScale(this.firstMulti, this.pointers);
-    this.updateTransform({}, scale);
+    this.updateTransform(0, 0, scale);
 
     return true
   }
@@ -235,10 +238,10 @@ function getScale(start, end) {
   }
 
   init() {
-    const {startPositionX, startPositionY, scale, dBrightness} = this.nodeState;
+    const {dBrightness} = this.nodeState;
 
     this.updateFilter(dBrightness);
-    this.updateTransform({startPositionX, startPositionY}, scale);
+    this.updateTransform(0, 0, null);
 
     this.el.addEventListener('pointerdown', this.onPointerDown.bind(this));
     this.el.addEventListener('pointermove', this.onPointerMove.bind(this));
