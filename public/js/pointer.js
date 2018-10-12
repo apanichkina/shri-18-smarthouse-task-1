@@ -1,5 +1,3 @@
-import pep from './lib/pep'
-
 const PROPS_XY = ['x', 'y'];
 const PROPS_CLIENT_XY = ['clientX', 'clientY'];
 
@@ -38,7 +36,6 @@ function getRotation(start, end) {
   }
 
   return result
-  // return getAngle(end[1], end[0], PROPS_CLIENT_XY) + getAngle(start[1], start[0], PROPS_CLIENT_XY);
 }
 
 function getScale(start, end) {
@@ -48,7 +45,6 @@ function getScale(start, end) {
 //
  class InteractiveElement {
   constructor(el) {
-    console.log('whf')
     if (el && window.PointerEvent) {
       this.el = el;
       this.parent = this.el.parentNode;
@@ -150,8 +146,6 @@ function getScale(start, end) {
     }
 
     this.selectEvent();
-    // console.log(event.type);
-
   }
 
   onPointerLeave(event) {
@@ -166,9 +160,6 @@ function getScale(start, end) {
     if (this.pointers.length === 1) {
       this.firstMulti = []
     }
-
-
-    // console.log(event.type);
   }
 
 
@@ -217,6 +208,7 @@ function getScale(start, end) {
 
   checkPinch() {
     console.log(event.type, 'pinch');
+
     if (!this.firstMulti.length) {
       return false
     }
