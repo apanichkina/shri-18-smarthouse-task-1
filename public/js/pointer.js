@@ -122,9 +122,8 @@ function getScale(start, end) {
     }
 
     this.currentGesture = {
-      startX: event.x,
-      startY: event.y,
       prevX: event.x,
+      prevY: event.y,
       prevTs: Date.now(),
     };
 
@@ -166,11 +165,11 @@ function getScale(start, end) {
   checkSwipe() {
     console.log(event.type, 'swipe');
 
-    const {startX, startY} = this.currentGesture;
+    const {prevX, prevY} = this.currentGesture;
     const {startPositionX, startPositionY, scale} = this.nodeState;
     const {x, y} = event;
-    let dx = x - startX;
-    let dy = y - startY;
+    let dx = x - prevX;
+    let dy = y - prevY;
     const newPositionX = startPositionX + dx;
     const newPositionY = startPositionY + dy;
 
@@ -180,9 +179,8 @@ function getScale(start, end) {
     const ts = Date.now();
 
     this.currentGesture.prevX = x;
+    this.currentGesture.prevY = y;
     this.currentGesture.prevTs = ts;
-    this.nodeState.startPositionX = newPositionX;
-    this.nodeState.startPositionY = newPositionY;
 
   }
 
@@ -203,6 +201,7 @@ function getScale(start, end) {
     }
 
     this.updateFilter(dr);
+
     return true
   }
 
