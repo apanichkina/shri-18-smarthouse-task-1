@@ -38,4 +38,7 @@ module.exports = {
   plugins: [
     cssExtractTextPlugin,
   ],
+  devServer: {
+    port: 9000,
+  }
 };
