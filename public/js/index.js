@@ -2,6 +2,7 @@ import '../css/index.css';
 import data from '../mocks/events.json'
 import fillCard from './cardTemplate'
 import {Chart} from "chart.js";
+import processPointer from './pointer'
 
 const chartBackgroundColor = {
   'water': 'rgba(54, 162, 235, 0.2)',
@@ -41,7 +42,6 @@ function prepareDataForChart(data) {
 }
 
 function drawChart(container, data) {
-  console.log('fff', data)
   const ctx = container.getContext('2d');
 
   // TODO destroy chart
@@ -86,14 +86,16 @@ function setContent(parentEl) {
 
 
     if (content[i].data && content[i].data.type === 'graph') {
-      const chartContainer = document.getElementById('chart')
-      const parsedData = prepareDataForChart(content[i].data.values)
+      const chartContainer = document.getElementById('chart');
+      const parsedData = prepareDataForChart(content[i].data.values);
 
       if (parsedData.length && chartContainer) {
         drawChart(chartContainer, parsedData)
       }
     }
   }
+
+  processPointer()
 }
 
 document.addEventListener('DOMContentLoaded', () => {
