@@ -96,21 +96,9 @@ function setContent(parentEl) {
   }
 
   const camera = document.querySelector('#camera .camera-view');
-  if (!window.PointerEvent) {
-    // traditional touch/mouse event handlers
-    camera.addEventListener('touchstart', function (e) {
-      // prevent compatibility mouse events and click
-      e.preventDefault();
-      console.log('touchstart camera');
+  if (('ontouchstart' in window) || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0)  {
+    document.body.classList.add('touch-support');
 
-    });
-
-    camera.addEventListener('mousedown', function (e) {
-      console.log('mousedown camera');
-    });
-
-
-  } else {
     const zoom = document.querySelector('#camera .camera-zoom__value');
     const bright = document.querySelector('#camera .camera-bright__value');
     const cameraProcessor = new InteractiveElement(camera, zoom, bright)
