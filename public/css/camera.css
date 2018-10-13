@@ -18,9 +18,14 @@
   touch-action: none;
   user-select: none;
   height: 316px;
+  user-drag: none;
 }
 
 .camera-info {
+  display: none;
+}
+
+.touch-support .camera-info {
   margin-top: var(--card-inner-padding);
   display: flex;
 }
