@@ -112,7 +112,7 @@ function fillCardDataEl(type, data) {
   }
 
   if (data.image) {
-    const camTmpl = template.content.querySelector(".camera-container");
+    const camTmpl = template.content.querySelector(".camera");
     const cam = document.importNode(camTmpl, true);
     result.push(cam)
   }

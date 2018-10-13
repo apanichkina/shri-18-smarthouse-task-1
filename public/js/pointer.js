@@ -1,6 +1,7 @@
 const PROPS_XY = ['x', 'y'];
 const PROPS_CLIENT_XY = ['clientX', 'clientY'];
-
+const MIN_SCALE = 1;
+const MAX_SCALE = 10;
 
 // helpers
 
@@ -74,9 +75,11 @@ function getScale(start, end) {
 
 //
  class InteractiveElement {
-  constructor(el) {
+  constructor(el, zoomEl, brightEl) {
     if (el && window.PointerEvent) {
       this.el = el;
+      this.zoomEl = zoomEl;
+      this.brightEl = brightEl;
       this.img = el.querySelector("img");
       this.parent = this.el.parentNode;
       this.currentGesture = null;
@@ -90,48 +93,78 @@ function getScale(start, end) {
       this.pointers = []; // array of active pointers
       this.firstMulti = [];// pointers copy ad the moment of start multitouch
       this.elClientRect = null;
-      this.paretnClientRect = null;
+      this.imgClientRect = null;
+      this.parentClientRect = null;
       this.init()
     }
   }
 
   // change brightness of this.img
   updateFilter(dBrightness) {
+    const result = this.nodeState.brightness + dBrightness;
+
     this.nodeState = {...this.nodeState, dBrightness};
-    this.img.style.filter = `brightness(${this.nodeState.brightness + dBrightness}%)`;
+    this.img.style.filter = `brightness(${result}%)`;
+
+    this.brightEl.textContent = `${result.toFixed(2)}%`
   }
 
    // change zoom of this.el
    updateScale(dScale) {
+    console.log(dScale);
      const {
        scale,
      } = this.nodeState;
-     const scaleValue = dScale || scale;
+     const scaleValue = scale * (dScale || 1);
 
-     this.img.style.transform = `scale(${scaleValue})`;
+     const validScale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, scaleValue));
+     this.img.style.transform = `scale(${validScale})`;
 
      this.nodeState = {
        ...this.nodeState,
-       scale: scaleValue,
+       scale: validScale,
      };
+
+     this.updatePosition(0, 0);
+     this.zoomEl.textContent = validScale.toFixed(2)
    }
 
   // change position of this.el
   updatePosition(dX, dY) {
-    console.log('updateTransform', dX, dY);
+    console.log('updateTransform', dX, dY, this.img.getBoundingClientRect());
     const {
       startPositionX,
       startPositionY,
+      scale,
     } = this.nodeState;
     const xValue = startPositionX + dX;
     const yValue = startPositionY + dY;
 
-    this.el.style.transform = `translate3d(${xValue}px, ${yValue}px, 0)`;
+    // validate X
+    const scaleDeltaXPerSide = this.imgClientRect ? this.imgClientRect.width * (scale - 1) / 2 : 0;
+    const leftLimit = Math.min(scaleDeltaXPerSide, xValue);
+
+    const rightLimit = this.imgClientRect ? (this.imgClientRect.width * (scale + 1) / 2) : leftLimit;
+    const rightLimitVisible = this.parentClientRect ?  (rightLimit - this.parentClientRect.width) :  rightLimit;
+
+    const validX = Math.max(-1 * rightLimitVisible, leftLimit);
+
+    // validate Y
+    const scaleDeltaYPerSide = this.imgClientRect ? this.imgClientRect.height * (scale - 1) / 2 : 0;
+    const topLimit = Math.min(scaleDeltaYPerSide, yValue);
+
+    const bottomtLimit = this.imgClientRect ? (this.imgClientRect.height * (scale + 1) / 2) : topLimit;
+    const bottomtLimitVisible = this.parentClientRect ?  (bottomtLimit - this.parentClientRect.height) :  bottomtLimit;
+
+    const validY = Math.max(-1 * bottomtLimitVisible, topLimit);
+
+    // set computed data
+    this.el.style.transform = `translate3d(${validX}px, ${validY}px, 0)`;
 
     this.nodeState = {
       ...this.nodeState,
-      startPositionX:  xValue,
-      startPositionY:  yValue,
+      startPositionX:  validX,
+      startPositionY:  validY,
     };
 
   }
@@ -139,7 +172,8 @@ function getScale(start, end) {
   onPointerDown(event) {
     if (!this.elClientRect) {
       this.elClientRect = this.el.getBoundingClientRect();
-      this.paretnClientRect = this.parent.getBoundingClientRect();
+      this.imgClientRect = this.img.getBoundingClientRect();
+      this.parentClientRect = this.parent.getBoundingClientRect();
     }
     this.el.setPointerCapture(event.pointerId);
 
