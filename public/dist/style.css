@@ -1133,7 +1133,7 @@ input[type=range]:focus {
   overflow: hidden;
 }
 
-.camera {
+.camera-view {
   -ms-touch-action: none;
       touch-action: none;
   -webkit-user-select: none;
@@ -1142,7 +1142,7 @@ input[type=range]:focus {
           user-select: none;
 }
 
-.camera img {
+.camera-view img {
   position: relative;
   -ms-touch-action: none;
       touch-action: none;
@@ -1151,6 +1151,24 @@ input[type=range]:focus {
       -ms-user-select: none;
           user-select: none;
   height: 316px;
+}
+
+.camera-info {
+  margin-top: 20px;
+  margin-top: var(--card-inner-padding);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.camera-bright, .camera-zoom {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.camera-bright {
+  text-align: right;
 }
 
 .chart-container {

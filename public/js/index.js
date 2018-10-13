@@ -95,7 +95,7 @@ function setContent(parentEl) {
     }
   }
 
-  const camera = document.getElementById('camera');
+  const camera = document.querySelector('#camera .camera-view');
   if (!window.PointerEvent) {
     // traditional touch/mouse event handlers
     camera.addEventListener('touchstart', function (e) {
@@ -111,8 +111,9 @@ function setContent(parentEl) {
 
 
   } else {
-    const cameraProcessor = new InteractiveElement(camera)
-
+    const zoom = document.querySelector('#camera .camera-zoom__value');
+    const bright = document.querySelector('#camera .camera-bright__value');
+    const cameraProcessor = new InteractiveElement(camera, zoom, bright)
   }
 
 }

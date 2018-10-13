@@ -8,14 +8,28 @@
   overflow: hidden;
 }
 
-.camera {
+.camera-view {
   touch-action: none;
   user-select: none;
 }
 
-.camera img {
+.camera-view img {
   position: relative;
   touch-action: none;
   user-select: none;
   height: 316px;
+}
+
+.camera-info {
+  margin-top: var(--card-inner-padding);
+  display: flex;
+}
+
+.camera-bright,
+.camera-zoom {
+  flex: 1;
+}
+
+.camera-bright {
+  text-align: right;
 }
