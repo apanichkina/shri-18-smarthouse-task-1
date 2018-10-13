@@ -6,7 +6,9 @@
   "scripts": {
     "watch": "webpack --watch",
     "build": "webpack --mode production",
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server",
+    "server": "node server/server.js",
+    "dev": "nodemon server/server.js"
   },
   "repository": {
     "type": "git",
@@ -22,7 +24,8 @@
   },
   "homepage": "https://apanichkina.github.io/shri-18-smarthouse-task-1/",
   "dependencies": {
-    "chart.js": "^2.7.2"
+    "chart.js": "^2.7.2",
+    "express": "^4.16.4"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.1.0",
