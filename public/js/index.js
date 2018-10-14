@@ -3,6 +3,8 @@ import { Chart } from 'chart.js';
 import data from '../mocks/events';
 import fillCard from './cardTemplate';
 import { InteractiveElement } from './pointer';
+import initVideo from './video';
+import analyseAudio from './audioAnalyser'
 
 const chartBackgroundColor = {
   water: 'rgba(54, 162, 235, 0.2)',
@@ -105,7 +107,64 @@ function setContent(parentEl) {
   }
 }
 
+function setContentVideo(parentEl) {
+  // const template = document.getElementsByTagName("template")[2];
+  // const videoTmpl = template.content.querySelector(".video");
+  // // fillCard(card, content[i]);
+  // const video = document.importNode(videoTmpl, true);
+  // parentEl.appendChild(video);
+  const v1 = document.getElementById('video-1')
+    v1.addEventListener('click', ()=> {
+      console.log('click')
+      v1.parentElement.classList.add('video-content_big')
+      v1.muted = false;
+      v1.play()
+    })
+
+  // TODO analyseAudio(v1)
+
+
+  const v4 = document.getElementById('video-4')
+  v4.addEventListener('click', ()=> {
+    console.log('click')
+    v4.parentElement.classList.add('video-content_big')
+    v4.muted = false;
+  })
+
+
+  initVideo(
+    document.getElementById('video-3'),
+    'http://localhost:9191/master?url=http%3A%2F%2Flocalhost%3A3102%2Fstreams%2Fsosed%2Fmaster.m3u8'
+  );
+
+  initVideo(
+    document.getElementById('video-2'),
+    'http://localhost:9191/master?url=http%3A%2F%2Flocalhost%3A3102%2Fstreams%2Fcat%2Fmaster.m3u8'
+  );
+
+  initVideo(
+    document.getElementById('video-1'),
+    'http://localhost:9191/master?url=http%3A%2F%2Flocalhost%3A3102%2Fstreams%2Fdog%2Fmaster.m3u8'
+  );
+
+  initVideo(
+    document.getElementById('video-4'),
+    'http://localhost:9191/master?url=http%3A%2F%2Flocalhost%3A3102%2Fstreams%2Fhall%2Fmaster.m3u8'
+  );
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const root = document.getElementById('content__layout');
-  setContent(root);
+  const title = document.getElementsByClassName('content__title')[0];
+  const href = window.location.href;
+  const url = new URL(href);
+  const page = url.searchParams.get('page');
+
+  if (page === 'video') {
+    title.textContent = 'Видео';
+    setContentVideo(root);
+  } else {
+    title.textContent = 'Лента событий';
+    setContent(root);
+  }
 });
