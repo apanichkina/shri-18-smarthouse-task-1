@@ -2,26 +2,37 @@ const { logServerActivity } = require('./helpers');
 const { FilterByType } = require('./filter');
 
 module.exports.sendFile = function sendFile(file, res, path, filterName) {
-  logServerActivity(null, `filter file by type=${filterName}`, true);
+  logServerActivity('', `filter file by type=${filterName}`, true);
 
   if (filterName) {
     const filter = new FilterByType(filterName);
+
+    filter.on('error', function (err) {
+      const msg = 'file is not a valid JSON! Can`t be filtered. ';
+
+      logServerActivity(500, msg + err);
+      res.status(500).send(msg)
+    });
+
     file.pipe(filter).pipe(res);
   } else {
     file.pipe(res);
   }
 
   file.on('error', function (err) {
-    let msg = '';
+    let status = '500';
+    let msg = 'something bad';
 
     if (err.code === 'ENOENT') {
+      status = 400;
       msg = `file ${path} not found`
     } else {
+      status = 500;
       msg = `read file ${path} error: ${err}`
     }
 
-    logServerActivity(400, msg);
-    res.status(400).send(msg)
+    logServerActivity(status, msg);
+    res.status(status).send(msg)
   });
 
   res.on('close', function () {

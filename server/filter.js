@@ -1,5 +1,7 @@
 const stream = require('stream');
 const util = require('util');
+const { logServerActivity } = require('./helpers');
+
 const Transform = stream.Transform;
 
 module.exports.FilterByType = Filter;
@@ -28,7 +30,8 @@ Filter.prototype._transform = function (chunk, encoding, callback) {
   try {
     parsed = JSON.parse(chunk);
   } catch (err) {
-    console.log(e);
+    console.log(err);
+
     return callback(err);
   }
 

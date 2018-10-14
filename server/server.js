@@ -53,5 +53,5 @@ app.listen(PORT, (err) => {
     return console.log('something bad happened: ', err);
   }
 
-  console.log(`Example app listening on port ${PORT}!`)
+  console.log(`Smart House server listening on port ${PORT}!`)
 });
