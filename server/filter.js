@@ -1,6 +1,5 @@
 const stream = require('stream');
 const util = require('util');
-const { logServerActivity } = require('./helpers');
 
 const Transform = stream.Transform;
 
@@ -35,7 +34,7 @@ Filter.prototype._transform = function (chunk, encoding, callback) {
     return callback(err);
   }
 
-  parsed.events = parsed.events.filter(el => el.type === this.filterProps);
+  parsed.events = parsed.events.filter(el => this.filterProps.includes(el.type));
 
   this.push(JSON.stringify(parsed));
   callback();
