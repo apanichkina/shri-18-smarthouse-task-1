@@ -1,17 +1,17 @@
-import getIconSrc from './icons'
-import {Chart} from "chart.js";
+import { Chart } from 'chart.js';
+import getIconSrc from './icons';
 
-const TEMPLATE = document.getElementsByTagName("template");
+const TEMPLATE = document.getElementsByTagName('template');
 
 
 const INDICATOR_NAME_RU = {
-  'temperature': 'Температура',
-  'humidity': 'Влажность'
+  temperature: 'Температура',
+  humidity: 'Влажность',
 };
 
 const INDICATOR_UNIT_RU = {
-  'temperature': '&#x2103;',
-  'humidity': '%'
+  temperature: '&#x2103;',
+  humidity: '%',
 };
 
 const SEC_PER_MIN = 60;
@@ -21,9 +21,10 @@ function secToTime(seconds) {
   let sec = seconds % SEC_PER_MIN;
 
   if (sec < 10) {
-    sec = `0${sec}`
+    sec = `0${sec}`;
   }
-  return [min, sec].join(':')
+
+  return [min, sec].join(':');
 }
 
 function timeToSec(time) {
@@ -31,12 +32,12 @@ function timeToSec(time) {
   const min = Number(timeParts[0]) * SEC_PER_MIN;
   const sec = Number(timeParts[1]);
 
-  return min + sec
+  return min + sec;
 }
 
 function fillIndicator(container, data) {
-  const template = document.getElementsByTagName("template")[1];
-  const indicatorTmpl =  template.content.querySelector(".indicator");
+  const template = document.getElementsByTagName('template')[1];
+  const indicatorTmpl = template.content.querySelector('.indicator');
   const indicator = document.importNode(indicatorTmpl, true);
   const keyEl = indicator.querySelector('.indicator__key');
   const valueEl = indicator.querySelector('.indicator__value');
@@ -44,8 +45,7 @@ function fillIndicator(container, data) {
   keyEl.textContent = INDICATOR_NAME_RU[data.key];
   valueEl.innerHTML = data.value + INDICATOR_UNIT_RU[data.key];
 
-  container.appendChild(indicator)
-
+  container.appendChild(indicator);
 }
 
 function fillCardDataEl(type, data) {
@@ -53,8 +53,8 @@ function fillCardDataEl(type, data) {
   const result = [];
 
   if (data.buttons) {
-    const controlsTmpl = template.content.querySelector("div.controls");
-    const buttonTmpl =  template.content.querySelector("button.button");
+    const controlsTmpl = template.content.querySelector('div.controls');
+    const buttonTmpl = template.content.querySelector('button.button');
     const controls = document.importNode(controlsTmpl, true);
 
 
@@ -64,38 +64,38 @@ function fillCardDataEl(type, data) {
       controls.appendChild(button);
     }
 
-    result.push(controls)
+    result.push(controls);
   }
 
   if (data.temperature && data.humidity) {
-    const indicatorsTmpl = template.content.querySelector(".indicators");
+    const indicatorsTmpl = template.content.querySelector('.indicators');
     const indicators = document.importNode(indicatorsTmpl, true);
 
-    fillIndicator(indicators, {key: 'temperature', value: data.temperature });
-    fillIndicator(indicators, {key: 'humidity', value: data.humidity});
+    fillIndicator(indicators, { key: 'temperature', value: data.temperature });
+    fillIndicator(indicators, { key: 'humidity', value: data.humidity });
 
-    result.push(indicators)
+    result.push(indicators);
   }
 
 
   if (data.track && data.volume) {
-    const musicTmpl = template.content.querySelector(".music");
+    const musicTmpl = template.content.querySelector('.music');
     const music = document.importNode(musicTmpl, true);
     const image = music.querySelector('.music__album-cover');
     const name = music.querySelector('.music__name');
     const volumeBar = music.querySelector('.music__volume-bar');
-    const volumeValue= music.querySelector('.music__volume-value');
+    const volumeValue = music.querySelector('.music__volume-value');
     const trackBar = music.querySelector('.music__track-bar');
-    const trackLength= music.querySelector('.music__track-length');
+    const trackLength = music.querySelector('.music__track-length');
 
     image.src = data.albumcover;
-    name.textContent =  [data.artist, data.track.name].join(' - ');
+    name.textContent = [data.artist, data.track.name].join(' - ');
     volumeBar.value = data.volume;
-    volumeValue.textContent = data.volume + '%';
+    volumeValue.textContent = `${data.volume}%`;
 
     volumeBar.addEventListener('input', (evt) => {
       if (evt && evt.target) {
-        volumeValue.textContent = evt.target.value+ '%';
+        volumeValue.textContent = `${evt.target.value}%`;
       }
     });
 
@@ -108,31 +108,31 @@ function fillCardDataEl(type, data) {
       }
     });
 
-    result.push(music)
+    result.push(music);
   }
 
   if (data.image) {
-    const camTmpl = template.content.querySelector(".camera");
+    const camTmpl = template.content.querySelector('.camera');
     const cam = document.importNode(camTmpl, true);
-    result.push(cam)
+    result.push(cam);
   }
 
   if (data.type === 'graph') {
-    const chartTmpl = template.content.querySelector(".chart-container");
+    const chartTmpl = template.content.querySelector('.chart-container');
     const chart = document.importNode(chartTmpl, true);
-    result.push(chart)
+    result.push(chart);
   }
 
-  return result
+  return result;
 }
 
 export default function fillCard(card, content) {
-  const header = card.querySelector(".card__header");
-  const title = card.querySelector(".card__title");
-  const icon = card.querySelector(".card__icon");
-  const source = card.querySelector(".card__source");
-  const time = card.querySelector(".card__time");
-  const body = card.querySelector(".card__body");
+  const header = card.querySelector('.card__header');
+  const title = card.querySelector('.card__title');
+  const icon = card.querySelector('.card__icon');
+  const source = card.querySelector('.card__source');
+  const time = card.querySelector('.card__time');
+  const body = card.querySelector('.card__body');
   const isCritical = content.type === 'critical';
 
   if (isCritical) {
@@ -149,17 +149,16 @@ export default function fillCard(card, content) {
     // nothing for fill card body
     body.parentNode.removeChild(body);
   } else {
-    const description = body.querySelector(".card__description");
+    const description = body.querySelector('.card__description');
     description.textContent = content.description;
 
     if (content.data) {
       const cardDataEl = fillCardDataEl(content.icon, content.data) || [];
 
       for (let i = 0; i < cardDataEl.length; i++) {
-        body.appendChild(cardDataEl[i])
+        body.appendChild(cardDataEl[i]);
       }
     }
-
   }
 
 

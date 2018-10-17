@@ -1,54 +1,54 @@
 import '../css/index.css';
-import data from '../mocks/events.js'
-import fillCard from './cardTemplate'
-import {Chart} from "chart.js";
-import {InteractiveElement} from './pointer'
+import { Chart } from 'chart.js';
+import data from '../mocks/events';
+import fillCard from './cardTemplate';
+import { InteractiveElement } from './pointer';
 
 const chartBackgroundColor = {
-  'water': 'rgba(54, 162, 235, 0.2)',
-  'electricity': 'rgba(255, 206, 86, 0.2)',
-  'gas': 'rgba(255, 159, 64, 0.2)',
-  'default': 'rgba(255,99,132, 0.2)',
+  water: 'rgba(54, 162, 235, 0.2)',
+  electricity: 'rgba(255, 206, 86, 0.2)',
+  gas: 'rgba(255, 159, 64, 0.2)',
+  default: 'rgba(255,99,132, 0.2)',
 };
 
 const chartBorderColor = {
-  'water': 'rgba(54, 162, 235, 1)',
-  'electricity': 'rgba(255, 206, 86, 1)',
-  'gas': 'rgba(255, 159, 64, 1)',
-  'default': 'rgba(255,99,132, 1)',
+  water: 'rgba(54, 162, 235, 1)',
+  electricity: 'rgba(255, 206, 86, 1)',
+  gas: 'rgba(255, 159, 64, 1)',
+  default: 'rgba(255,99,132, 1)',
 };
 
 
-function prepareDataForChart(data) {
-  const defaultBackgroundColor = chartBackgroundColor['default'];
-  const defaultBorderColor = chartBorderColor['default'];
+function prepareDataForChart(chartData) {
+  const defaultBackgroundColor = chartBackgroundColor.default;
+  const defaultBorderColor = chartBorderColor.default;
 
-  let result = [];
+  const result = [];
 
-  for (let item of data) {
+  for (const item of chartData) {
     Object.keys(item).forEach((key) => {
-      let localResult = {label: key, data: [], borderWidth: 1};
+      const localResult = { label: key, data: [], borderWidth: 1 };
 
-      for (let param of item[key]) {
+      for (const param of item[key]) {
         localResult.backgroundColor = chartBackgroundColor[key] || defaultBackgroundColor;
         localResult.borderColor = chartBorderColor[key] || defaultBorderColor;
-        localResult.data.push({x: new Date(Number(param[0])), y: param[1]})
+        localResult.data.push({ x: new Date(Number(param[0])), y: param[1] });
       }
-      result.push(localResult)
+      result.push(localResult);
     });
   }
 
   return result;
 }
 
-function drawChart(container, data) {
+function drawChart(container, datasets) {
   const ctx = container.getContext('2d');
 
   // TODO destroy chart
   return new Chart(ctx, {
     type: 'line',
     data: {
-      datasets: data
+      datasets: datasets,
     },
     options: {
       responsive: true,
@@ -58,24 +58,24 @@ function drawChart(container, data) {
           type: 'time',
           time: {
             displayFormats: {
-              minute: 'h:mm'
-            }
-          }
+              minute: 'h:mm',
+            },
+          },
         }],
         yAxes: [{
           ticks: {
-            beginAtZero:true
-          }
-        }]
-      }
-    }
+            beginAtZero: true,
+          },
+        }],
+      },
+    },
   });
 }
 
 
 function setContent(parentEl) {
-  const template = document.getElementsByTagName("template")[0];
-  const cardTmpl = template.content.querySelector("div.card");
+  const template = document.getElementsByTagName('template')[0];
+  const cardTmpl = template.content.querySelector('div.card');
   const content = data.events || [];
   let card = null;
 
@@ -90,20 +90,19 @@ function setContent(parentEl) {
       const parsedData = prepareDataForChart(content[i].data.values);
 
       if (parsedData.length && chartContainer) {
-        drawChart(chartContainer, parsedData)
+        drawChart(chartContainer, parsedData);
       }
     }
   }
 
   const camera = document.querySelector('#camera .camera-view');
-  if (('ontouchstart' in window) || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0)  {
+  if (('ontouchstart' in window) || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0) {
     document.body.classList.add('touch-support');
 
     const zoom = document.querySelector('#camera .camera-zoom__value');
     const bright = document.querySelector('#camera .camera-bright__value');
-    const cameraProcessor = new InteractiveElement(camera, zoom, bright)
+    const cameraProcessor = new InteractiveElement(camera, zoom, bright);
   }
-
 }
 
 document.addEventListener('DOMContentLoaded', () => {
