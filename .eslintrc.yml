@@ -1,0 +1,7 @@
+extends: airbnb-base
+rules:
+  no-plusplus: ["error", { "allowForLoopAfterthoughts": true }]
+  newline-before-return: "error"
+env:
+  browser: true
+  node: true
