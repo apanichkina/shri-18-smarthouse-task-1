@@ -151,32 +151,129 @@
   </header>
   <main class="content container">
     <div class="content__title text_bold">Лента событий</div>
-    <!--<canvas id="theCanvas" width="1024" height="256" title="Press Play!"></canvas>-->
+
     <div id="content__layout" class="content__layout">
       <!-- content -->
       <div class="video-container card card_m">
         <div class="video-content">
-          <video id="video-1" class="video" muted autoplay></video>
-        </div>
-      </div>
-      <div class="video-container card card_m">
-        <div class="video-content">
-          <video id="video-2" class="video"  muted autoplay></video>
-        </div>
-      </div>
-      <div class="video-container card card_m">
-        <div class="video-content">
-          <video id="video-3" class="video"  muted autoplay></video>
+          <div class="video-filter">
+            <video id="video-1" class="video" controls muted autoplay></video>
+          </div>
+          <div class="video-control__wrapper">
+            <div class="video-control">
+              <input type="range" class="music__volume-bar brightness-bar" title="brightness" min="50" max="150" value="100" step="1">
+              <span class="music__volume-value brightness-value"></span>
+            </div>
+            <div class="video-control">
+              <input type="range" class="music__volume-bar contrast-bar" title="contrast" min="50" max="500" value="50" step="1">
+              <span class="music__volume-value contrast-value"></span>
+            </div>
+            <div class="video-control">
+              <button class="button text_bold">
+                Все камеры
+              </button>
+            </div>
+            <div class="video-control">
+              <canvas class="theCanvas" width="128" height="64" title="Press Play!"></canvas>
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="video-container card card_m">
         <div class="video-content">
-          <video id="video-4" class="video"  muted autoplay></video>
+          <div class="video-filter">
+            <video id="video-2" class="video" controls muted autoplay></video>
+          </div>
+          <div class="video-control__wrapper">
+            <div class="video-control">
+              <input type="range" class="music__volume-bar brightness-bar" title="brightness" min="50" max="150" value="100" step="1">
+              <span class="music__volume-value brightness-value"></span>
+            </div>
+            <div class="video-control">
+              <input type="range" class="music__volume-bar contrast-bar" title="contrast" min="50" max="500" value="50" step="1">
+              <span class="music__volume-value contrast-value"></span>
+            </div>
+            <div class="video-control">
+              <button class="button text_bold">
+                Все камеры
+              </button>
+            </div>
+            <div class="video-control">
+              <canvas class="theCanvas" width="128" height="64" title="Press Play!"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="video-container card card_m">
+        <div class="video-content">
+          <div class="video-filter">
+            <video id="video-3" class="video" controls muted autoplay></video>
+          </div>
+          <div class="video-control__wrapper">
+            <div class="video-control">
+              <input type="range" class="music__volume-bar brightness-bar" title="brightness" min="50" max="150" value="100" step="1">
+              <span class="music__volume-value brightness-value"></span>
+            </div>
+            <div class="video-control">
+              <input type="range" class="music__volume-bar contrast-bar" title="contrast" min="50" max="500" value="50" step="1">
+              <span class="music__volume-value contrast-value"></span>
+            </div>
+            <div class="video-control">
+              <button class="button text_bold">
+                Все камеры
+              </button>
+            </div>
+            <div class="video-control">
+              <canvas class="theCanvas" width="128" height="64" title="Press Play!"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="video-container card card_m">
+        <div class="video-content">
+          <div class="video-filter">
+            <video id="video-4" class="video" controls muted autoplay></video>
+          </div>
+          <div class="video-control__wrapper">
+            <div class="video-control">
+              <input type="range" class="music__volume-bar brightness-bar" title="brightness" min="50" max="150" value="100" step="1">
+              <span class="music__volume-value brightness-value"></span>
+            </div>
+            <div class="video-control">
+              <input type="range" class="music__volume-bar contrast-bar" title="contrast" min="50" max="500" value="50" step="1">
+              <span class="music__volume-value contrast-value"></span>
+            </div>
+            <div class="video-control">
+              <button class="button text_bold">
+                Все камеры
+              </button>
+            </div>
+            <div class="video-control">
+              <canvas class="theCanvas" width="128" height="64" title="Press Play!"></canvas>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </main>
+  <div id="popup">
+    <canvas id="c"></canvas>
+    <canvas id="canvasPopup" width="128" height="64" title="Press Play!"></canvas>
+    <button class="button text_bold">
+      Все камеры
+    </button>
+  </div>
+  <div id="popup-temp"></div>
+  <!--<div id="popup" class="popup">-->
+    <!--<div class="video-content">-->
+      <!--<video class="video" controls muted autoplay></video>-->
+      <!--<div class="video-control">-->
+        <!--<input type="range" class="music__volume-bar" title="volume" min="0" max="100" value="20" step="1">-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
   <footer class="footer text_secondary text_xs container">
     <div class="footer-content">
       <div class="footer-content__left">

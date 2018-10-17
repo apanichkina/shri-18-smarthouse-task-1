@@ -3,8 +3,9 @@ import { Chart } from 'chart.js';
 import data from '../mocks/events';
 import fillCard from './cardTemplate';
 import { InteractiveElement } from './pointer';
-import initVideo from './video';
+import { initVideo, initControls } from './video';
 import analyseAudio from './audioAnalyser'
+import popup from './popup'
 
 const chartBackgroundColor = {
   water: 'rgba(54, 162, 235, 0.2)',
@@ -113,23 +114,49 @@ function setContentVideo(parentEl) {
   // // fillCard(card, content[i]);
   // const video = document.importNode(videoTmpl, true);
   // parentEl.appendChild(video);
-  const v1 = document.getElementById('video-1')
-    v1.addEventListener('click', ()=> {
-      console.log('click')
-      v1.parentElement.classList.add('video-content_big')
-      v1.muted = false;
-      v1.play()
-    })
+  // const v1 = document.getElementById('video-1')
+  //   v1.addEventListener('click', ()=> {
+  //     v1.parentElement.classList.add('video-content_big')
+  //     popup(v1.parentElement)
+  //
+  //     console.log('click')
+  //
+  //     v1.muted = false;
+  //     v1.play()
+  //   })
 
-  // TODO analyseAudio(v1)
+  const videoContents = document.getElementsByClassName('video-content');
+  const popupEl = document.getElementById('popup');
+  const button = popupEl.querySelector('.button')
+  button.addEventListener('click', () => {
+    // video.removeEventListener('play', goCanvas) ;
+    requestAnimationFrame(() => popupEl.classList.toggle('popup_open'))
+    setTimeout(()=>{ popupEl.style.display = 'none';}, 1000)
 
-
-  const v4 = document.getElementById('video-4')
-  v4.addEventListener('click', ()=> {
-    console.log('click')
-    v4.parentElement.classList.add('video-content_big')
-    v4.muted = false;
   })
+  for(let i = 0; i < videoContents.length; ++i) {
+    const videoContent = videoContents[i];
+    const videoSource = videoContent.querySelector('video');
+    const canvas = videoContent.querySelector('.theCanvas');
+
+    // analyseAudio(videoSource, canvas);
+
+    const brightnessFilterEl = videoContent.querySelector('.video-filter');
+    const videoBrightnessControl = videoContent.querySelector('.brightness-bar');
+    const videoContrastControl = videoContent.querySelector('.contrast-bar');
+    initControls(brightnessFilterEl, videoSource, videoBrightnessControl, videoContrastControl);
+
+    videoSource.addEventListener('play', () => console.log('rrr'))
+    videoContent.addEventListener('click', () => {
+      videoSource.pause();
+      popup(videoContent, videoSource);
+      console.log('click');
+      videoContent.classList.add('video-content_big');
+      videoSource.muted = false;
+      videoSource.play();
+    });
+
+  }
 
 
   initVideo(
