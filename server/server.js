@@ -6,6 +6,7 @@ const { pageNotFound } = require('./middlewareHandlers');
 
 const PORT = 8000;
 
+app.set('json spaces', 40);
 // routes
 app.get('/', sayHello);
 

@@ -13,7 +13,7 @@ function Filter(filterProps, options) {
 
   // init Transform
   if (!options) {
-    options = {};  // ensure object
+    options = {}; // ensure object
   }
 
   options.objectMode = true; // forcing object mode
@@ -23,7 +23,7 @@ function Filter(filterProps, options) {
 
 util.inherits(Filter, Transform);
 
-Filter.prototype._transform = function (chunk, encoding, callback) {
+Filter.prototype._transform = function _transform(chunk, encoding, callback) {
   let parsed = {};
 
   try {
