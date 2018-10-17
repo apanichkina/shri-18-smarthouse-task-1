@@ -5,9 +5,6 @@ import fillCard from './cardTemplate';
 import drawChart from './chart';
 import { InteractiveElement } from './pointer';
 import { initVideoSource, initVideoContainerHandlers } from './video';
-import analyseAudio from './audioAnalyser';
-import popup from './popup';
-
 
 function setContent(parentEl) {
   const template = document.getElementsByTagName('template')[0];

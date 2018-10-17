@@ -1,111 +1,133 @@
-import analyseAudio from './audioAnalyser';
+import { AudioAnalyser } from './audioAnalyser';
 
-export function bb(content) {
-  console.log(content);
-  const layout = document.getElementById('content__layout');
-  const layoutRect = layout.getBoundingClientRect();
-  const contentRect = content.getBoundingClientRect();
-  const control = content.querySelector('.video-control__wrapper');
-  const parent = content.parentElement;
-
-
-  const parentRect = parent.getBoundingClientRect();
-  parent.style.width = `${parentRect.width}.px`;
-  parent.style.height = `${parentRect.height}.px`;
-
-  content.style = `position: absolute; top:${parentRect.top}; left${parentRect.left};`;
-
-
-  console.log(layout.getBoundingClientRect());
-  console.log(layout.clientHeight);
-  console.log(content.getBoundingClientRect());
-  console.log(content.clientHeight);
-  const style = `transform: translate3d(${layoutRect.x - contentRect.x}px,${layoutRect.y - contentRect.y}px, 0) scale(${layoutRect.width / contentRect.width}, ${(layoutRect.height) / contentRect.height})`;
-  // const style = `transform: translateZ(0); width: ${layoutRect.width}px; height: ${layoutRect.height}px;`;
-
-  console.log(style);
-  content.style = style;
-  control.style = `transform: scale(${1 / (layoutRect.width / contentRect.width)}, ${1 / ((layoutRect.height) / contentRect.height)})`;
-}
 const px = value => `${value}px`;
 
+export class CanvasVideo {
+  constructor(canvas) {
+    this.el = canvas;
+    this.context = canvas.getContext('2d');
 
-function initControls(el, elBase, brightnessControl, contrastControl) {
-  let brightness = 100;
-  let contrast = 100;
-  let styleFilter = '';
+    this.video = null;
+    this.cw = canvas.clientWidth;
+    this.ch = canvas.clientHeight;
 
-  el.style.filter = `brightness(${brightness}%) contrast(${contrast}%)`;
+    this.needDraw = false;
+  }
 
-  brightnessControl.addEventListener('input', (evt) => {
-    brightness = evt.target.value;
-    styleFilter = `brightness(${brightness}%) contrast(${contrast}%)`;
+  init(v) {
+    this.video = v;
+    this.cw = this.el.clientWidth;
+    this.ch = v.clientHeight * this.cw / v.clientWidth;
+    this.el.width = this.cw;
+    this.el.height = this.ch;
 
-    el.style.filter = styleFilter;
-    elBase.style.filter = styleFilter;
-  });
+    this.needDraw = true;
+    this.draw();
+  }
 
-  contrastControl.addEventListener('input', (evt) => {
-    contrast = evt.target.value;
-    styleFilter = `brightness(${brightness}%) contrast(${contrast}%)`;
+  draw() {
+    console.log('draW ', this.video)
+    if (!this.needDraw || (!this.video.played && (this.video.paused || this.video.ended))) {
+      return false;
+    }
+    this.context.drawImage(this.video, 0, 0, this.cw, this.ch);
 
-    el.style.filter = styleFilter;
-    elBase.style.filter = styleFilter;
-  });
+    return requestAnimationFrame(() => this.draw());
+  }
+
+  drawStop() {
+    this.needDraw = false;
+  }
 }
 
-export default function (content, video) {
-  const popup = document.getElementById('popup');
-  // const button = popup.querySelector('.button');
-  // const parent = content.parentNode;
-  // const parentRect = parent.getBoundingClientRect();
-  const contentRect = content.getBoundingClientRect();
+export class Popup {
+  constructor(el) {
+    this.el = el;
+    this.button = el.querySelector('.button');
+    this.brightnessControl = el.querySelector('.brightness-bar');
+    this.contrastControl = el.querySelector('.contrast-bar');
+    this.indicator = el.querySelector('.popup_audio-indicator');
+    this.video = el.querySelector('.popup_video');
 
-  Object.assign(popup.style, {
-    top: px(contentRect.top),
-    left: px(contentRect.left),
-    width: px(contentRect.width),
-    height: px(contentRect.height),
-    display: 'block',
-  }); // TODO возможно надо popup.style = Object.assign({}, ...)
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    this.audioAnalyser = AudioContext ? new AudioAnalyser(this.indicator, AudioContext) : null;
+    this.canvasVideo = new CanvasVideo(this.video);
 
-  analyseAudio(video, document.getElementById('canvasPopup'));
-  requestAnimationFrame(() => { console.log('popup_open'); popup.classList.toggle('popup_open'); });
+    this.brightness = '';
+    this.contrast = '';
+    this.sourceEl = null;
 
+    this.initListeners();
+  }
 
-  const videoBrightnessControl = popup.querySelector('.brightness-bar');
-  const videoContrastControl = popup.querySelector('.contrast-bar');
-  const canvas = document.getElementById('c');
-  initControls(canvas, video, videoBrightnessControl, videoContrastControl);
-  canvasVideo(video, canvas);
-}
+  initListeners() {
+    this.button.addEventListener('click', () => {
+      this.close();
+    });
 
-function canvasVideo(v, canvas, needDraw) {
-  console.log(v);
-  const context = canvas.getContext('2d');
-  context.clearRect(0, 0, canvas.width, canvas.height);
+    this.brightnessControl.addEventListener('input', (evt) => {
+      this.brightness = evt.target.value;
+      this.setFilter();
+    });
 
-  let cw; let ch;
+    this.contrastControl.addEventListener('input', (evt) => {
+      this.contrast = evt.target.value;
+      this.setFilter();
+    });
+  }
 
-  v.addEventListener('play', () => {
-    // console.log('play', v)
-    cw = v.clientWidth;
-    ch = v.clientHeight;
-    canvas.width = cw;
-    canvas.height = ch;
-    draw(v, context, cw, ch);
-    // if(needDraw.value) {
-    //   requestAnimationFrame(() => draw(v,c,bc,w,h));
-    // }
-    // draw(v,c,bc,w,h)
-  }, { once: true });
+  initFilter() {
+    const styleInitial = this.sourceEl.style.filter || '';
+    const contrast = styleInitial.match(/contrast\((\d+)%\)/i);
+    const brightness = styleInitial.match(/brightness\((\d+)%\)/i);
 
+    this.contrast = contrast ? contrast[1] : 100;
+    this.brightness = brightness ? brightness[1] : 100;
 
-  function draw(v, c, w, h) {
-    // console.log(v)
-    if (v.paused || v.ended) return false;
-    c.drawImage(v, 0, 0, w, h);
-    // Start over!
-    requestAnimationFrame(() => draw(v, c, w, h));
+    this.brightnessControl.value = this.brightness;
+    this.contrastControl.value = this.contrast;
+
+    this.setFilter();
+  }
+
+  setFilter() {
+    this.video.style.filter = `brightness(${this.brightness}%) contrast(${this.contrast}%)`;
+  }
+
+  init() {
+    this.initFilter();
+    const contentRect = this.sourceEl.getBoundingClientRect();
+    Object.assign(this.el.style, {
+      top: px(contentRect.top),
+      left: px(contentRect.left),
+      width: px(contentRect.width),
+      height: px(contentRect.height),
+      display: 'block',
+    });
+
+    this.audioAnalyser.init(this.sourceEl);
+
+    requestAnimationFrame(() => this.el.classList.toggle('popup_open'));
+
+    this.canvasVideo.init(this.sourceEl);
+  }
+
+  clear() {
+    this.canvasVideo.drawStop();
+  }
+
+  open(sourceEl) {
+    this.sourceEl = sourceEl;
+    this.init();
+  }
+
+  close() {
+    this.sourceEl.style.filter = this.video.style.filter;
+
+    requestAnimationFrame(() => this.el.classList.toggle('popup_open'));
+    setTimeout(() => { this.el.style.display = 'none'; }, 2000);
+    this.sourceEl.muted = true;
+    this.audioAnalyser.drop();
+    this.clear();
   }
 }

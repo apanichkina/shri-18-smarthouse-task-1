@@ -99,7 +99,7 @@
 <template>
   <div class="video-container card card_m">
     <div class="video-content">
-      <video class="video" controls muted autoplay data-fullscreen="on"></video>
+      <video class="video" muted autoplay data-fullscreen="on" style="filter: contrast(50%);"></video>
     </div>
   </div>
 </template>
@@ -184,8 +184,8 @@
   </footer>
 </div>
 <div id="popup">
-  <canvas id="c"></canvas>
-  <canvas id="canvasPopup" width="128" height="64" title="Press Play!"></canvas>
+  <canvas id="c" class="popup_video"></canvas>
+  <canvas id="canvasPopup" class='popup_audio-indicator' width="128" height="64" title="Press Play!"></canvas>
   <div class="video-control__wrapper">
     <div class="video-control">
       <input type="range" class="music__volume-bar brightness-bar" title="brightness" min="50" max="150" value="100" step="1">
