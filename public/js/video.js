@@ -1,36 +1,55 @@
-export function initVideo(video, url) {
+import popup from './popup';
+
+export function initVideoSource(video, url) {
   if (Hls.isSupported()) {
-    var hls = new Hls();
+    const hls = new Hls();
     hls.loadSource(url);
     hls.attachMedia(video);
-    hls.on(Hls.Events.MANIFEST_PARSED, function () {
+    hls.on(Hls.Events.MANIFEST_PARSED, () => {
       video.play();
     });
   } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
     video.src = url;
-    video.addEventListener('loadedmetadata', function () {
+    video.addEventListener('loadedmetadata', () => {
       video.play();
     });
   }
 }
 
-export function initControls(brightnessFilterEl, contrastFilterEl, brightnessControl, contrastControl) {
-  const initialBrightness = 100;
-  const initialContrast = 100;
+export function initVideoContainerHandlers() {
+  const videoContents = document.getElementsByClassName('video-content');
+  const popupEl = document.getElementById('popup');
+  const button = popupEl.querySelector('.button');
 
-  brightnessFilterEl.filter = `brightness(${initialBrightness}%)`;
-  contrastFilterEl.filter = `contrast(${initialContrast}%)`;
-  brightnessControl.value = `${initialBrightness}`;
-  contrastControl.value = `${initialContrast}`;
 
-  brightnessControl.addEventListener('input', (evt) => {
-    brightnessFilterEl.style.filter = `brightness(${evt.target.value}%)`;
+  button.addEventListener('click', () => {
+    // video.removeEventListener('play', goCanvas) ;
+    requestAnimationFrame(() => popupEl.classList.toggle('popup_open'));
+    setTimeout(() => { popupEl.style.display = 'none'; }, 2000);
   });
 
-  contrastControl.addEventListener('input', (evt) => {
-    contrastFilterEl.style.filter = `contrast(${evt.target.value}%)`;
-  })
 
+  for (let i = 0; i < videoContents.length; ++i) {
+    const videoContent = videoContents[i];
+    const videoSource = videoContent.querySelector('video');
+    const canvas = videoContent.querySelector('.theCanvas');
+
+    // analyseAudio(videoSource, canvas);
+
+    // const videoBrightnessControl = videoContent.querySelector('.brightness-bar');
+    // const videoContrastControl = videoContent.querySelector('.contrast-bar');
+    // initControls(videoSource, videoBrightnessControl, videoContrastControl);
+
+    videoSource.addEventListener('click', (evt) => {
+      console.log(evt.target.dataset.fullscreen); // TODO
+      videoSource.pause();
+      popup(videoContent, videoSource);
+      console.log('click');
+      // videoContent.classList.add('video-content_big');
+      videoSource.muted = false;
+      videoSource.play();
+    });
+  }
 }
 
 function draw(){

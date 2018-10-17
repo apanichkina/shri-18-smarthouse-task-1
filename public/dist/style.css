@@ -118,6 +118,7 @@ html, body {
   --card-inner-padding: 20px;
   --card-inner-padding-m: 16px;
   --card-inner-padding-xs: 10px;
+  --color-text: #333;
   --color-text-secondary: #858585;
   --color-accent: #ffd93e;
   --block-border-radius: 20px;
@@ -149,7 +150,7 @@ html, body {
   padding: 0;
   height: 100%;
   color: #333;
-  color: var(--color-black);
+  color: var(--color-text);
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
@@ -343,10 +344,21 @@ html, body {
   margin: 3px 0 3px 20px;
   cursor: pointer;
   vertical-align: top;
-  opacity: 0.6;
 }
 
-.nav__tab_active {
+.nav__tab .link {
+  opacity: 0.6;
+  color: #333;
+  color: var(--color-text);
+}
+
+.nav__tab .link:hover {
+  color: #333 !important;
+  color: var(--color-text) !important;
+  opacity: 1 !important;
+}
+
+.nav__tab_active .link {
   opacity: 1;
 }
 
@@ -1250,6 +1262,8 @@ input[type=range]:focus {
   position: fixed;
   background: #ffd93e;
   /*transition: all 1s ease;*/
+  -webkit-transition: all 2s ease;
+  transition: all 2s ease;
 }
 
 .popup_open {
@@ -1259,8 +1273,8 @@ input[type=range]:focus {
   width: 100% !important;
   /*bottom: 0 !important;*/
   /*right: 0 !important;*/
-  -webkit-transition: all 6s ease;
-  transition: all 6s ease;
+  -webkit-transition: all 2s ease;
+  transition: all 2s ease;
   display: block;
   /*animation: grow 1s ease;*/
 }

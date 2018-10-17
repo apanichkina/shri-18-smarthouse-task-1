@@ -39,10 +39,19 @@
   margin: 3px 0 3px 20px;
   cursor: pointer;
   vertical-align: top;
-  opacity: 0.6;
 }
 
-.nav__tab_active {
+.nav__tab .link {
+  opacity: 0.6;
+  color: var(--color-text);
+}
+
+.nav__tab .link:hover {
+  color: var(--color-text) !important;
+  opacity: 1 !important;
+}
+
+.nav__tab_active .link {
   opacity: 1;
 }
 

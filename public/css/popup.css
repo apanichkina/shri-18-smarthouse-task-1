@@ -4,6 +4,7 @@
   position: fixed;
   background: #ffd93e;
   /*transition: all 1s ease;*/
+  transition: all 2s ease;
 }
 
 .popup_open {
@@ -13,7 +14,7 @@
   width: 100% !important;
   /*bottom: 0 !important;*/
   /*right: 0 !important;*/
-  transition: all 6s ease;
+  transition: all 2s ease;
   display: block;
   /*animation: grow 1s ease;*/
 }

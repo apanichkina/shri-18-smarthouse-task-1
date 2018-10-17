@@ -7,6 +7,7 @@
   --card-inner-padding: 20px;
   --card-inner-padding-m: 16px;
   --card-inner-padding-xs: 10px;
+  --color-text: #333;
   --color-text-secondary: #858585;
   --color-accent: #ffd93e;
   --block-border-radius: 20px;
@@ -47,7 +48,7 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
-  color: var(--color-black);
+  color: var(--color-text);
   user-select: none;
   -ms-overflow-style: none;
 }
@@ -154,4 +155,3 @@ body {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-
