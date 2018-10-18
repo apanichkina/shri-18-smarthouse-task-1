@@ -111,6 +111,10 @@ body {
   justify-content: center;
 }
 
+.content__layout_four-rows {
+  grid-template-rows: repeat(4, 1fr);
+}
+
 @media (--less-than-1199-viewport) {
   .content {
     width: 90%;

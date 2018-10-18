@@ -60,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (page === 'video') {
     title.textContent = 'Видео';
+    root.classList.add('content__layout_four-rows');
     setContentVideo(root);
   } else {
     title.textContent = 'Лента событий';

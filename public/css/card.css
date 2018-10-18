@@ -19,7 +19,7 @@
 
 .card_m {
   grid-column: auto / span 3;
-  grid-row: auto;
+  grid-row: auto / span 2;
 }
 
 .card_s {

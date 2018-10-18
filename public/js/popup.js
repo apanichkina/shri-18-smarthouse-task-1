@@ -26,7 +26,6 @@ export class CanvasVideo {
   }
 
   draw() {
-    console.log('draW ', this.video)
     if (!this.needDraw || (!this.video.played && (this.video.paused || this.video.ended))) {
       return false;
     }
@@ -51,11 +50,12 @@ export class Popup {
 
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     this.audioAnalyser = AudioContext ? new AudioAnalyser(this.indicator, AudioContext) : null;
-    this.canvasVideo = new CanvasVideo(this.video);
+    // this.canvasVideo = new CanvasVideo(this.video);
 
     this.brightness = '';
     this.contrast = '';
     this.sourceEl = null;
+    this.sourceBaseDestination = null;
 
     this.initListeners();
   }
@@ -95,6 +95,7 @@ export class Popup {
   }
 
   init() {
+    this.audioAnalyser.init(this.sourceEl);
     this.initFilter();
     const contentRect = this.sourceEl.getBoundingClientRect();
     Object.assign(this.el.style, {
@@ -104,30 +105,38 @@ export class Popup {
       height: px(contentRect.height),
       display: 'block',
     });
-
-    this.audioAnalyser.init(this.sourceEl);
-
-    requestAnimationFrame(() => this.el.classList.toggle('popup_open'));
-
-    this.canvasVideo.init(this.sourceEl);
   }
 
   clear() {
-    this.canvasVideo.drawStop();
+    // this.canvasVideo.drawStop();
+    this.audioAnalyser.drop();
   }
 
   open(sourceEl) {
     this.sourceEl = sourceEl;
+
     this.init();
+
+    requestAnimationFrame(() => this.el.classList.toggle('popup_open'));
+    // this.canvasVideo.init(this.sourceEl);
+    this.sourceEl.pause();
+    this.sourceBaseDestination = this.sourceEl.parentElement;
+    this.video.appendChild(this.sourceEl);
+    this.sourceEl.play();
+    this.sourceEl.muted = false;
   }
 
   close() {
+    this.sourceEl.pause();
     this.sourceEl.style.filter = this.video.style.filter;
 
     requestAnimationFrame(() => this.el.classList.toggle('popup_open'));
-    setTimeout(() => { this.el.style.display = 'none'; }, 2000);
+    setTimeout(() => {
+      this.sourceBaseDestination.appendChild(this.sourceEl);
+      this.el.style.display = 'none';
+      this.sourceEl.play();
+    }, 2000);
     this.sourceEl.muted = true;
-    this.audioAnalyser.drop();
     this.clear();
   }
 }

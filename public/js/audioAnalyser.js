@@ -32,7 +32,6 @@ export class AudioAnalyser {
   }
 
   drop() {
-    this.source.disconnect(this.audioContext.destination);
     this.source.disconnect(this.analyser);
   }
 

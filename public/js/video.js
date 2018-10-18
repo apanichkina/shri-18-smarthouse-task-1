@@ -11,6 +11,7 @@ export function initVideoSource(video, url) {
   } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
     video.src = url;
     video.addEventListener('loadedmetadata', () => {
+      console.log('loadedmetadata')
       video.play();
     });
   }
@@ -26,12 +27,12 @@ export function initVideoContainerHandlers() {
 
     videoSource.addEventListener('click', (evt) => {
       console.log(evt.target.dataset.fullscreen); // TODO
-      videoSource.pause();
+      // videoSource.pause();
       popup.open(videoSource);
       console.log('click');
       // videoContent.classList.add('video-content_big');
-      videoSource.muted = false;
-      videoSource.play();
+      // videoSource.muted = false;
+      // videoSource.play();
     });
   }
 }
