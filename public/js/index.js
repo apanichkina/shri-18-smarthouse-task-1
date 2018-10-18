@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
     title.textContent = 'Лента событий';
     setContent(root);
   } else {
-    title.textContent = 'Видео';
+    title.textContent = 'Видеонаблюдение';
     root.classList.add('content__layout_four-rows');
     setContentVideo(root);
   }
