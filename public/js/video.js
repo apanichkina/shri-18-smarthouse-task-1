@@ -25,14 +25,8 @@ export function initVideoContainerHandlers() {
     const videoContent = videoContents[i];
     const videoSource = videoContent.querySelector('video');
 
-    videoSource.addEventListener('click', (evt) => {
-      console.log(evt.target.dataset.fullscreen); // TODO
-      // videoSource.pause();
+    videoSource.addEventListener('click', () => {
       popup.open(videoSource);
-      console.log('click');
-      // videoContent.classList.add('video-content_big');
-      // videoSource.muted = false;
-      // videoSource.play();
     });
   }
 }

@@ -2,43 +2,6 @@ import { AudioAnalyser } from './audioAnalyser';
 
 const px = value => `${value}px`;
 
-export class CanvasVideo {
-  constructor(canvas) {
-    this.el = canvas;
-    this.context = canvas.getContext('2d');
-
-    this.video = null;
-    this.cw = canvas.clientWidth;
-    this.ch = canvas.clientHeight;
-
-    this.needDraw = false;
-  }
-
-  init(v) {
-    this.video = v;
-    this.cw = this.el.clientWidth;
-    this.ch = v.clientHeight * this.cw / v.clientWidth;
-    this.el.width = this.cw;
-    this.el.height = this.ch;
-
-    this.needDraw = true;
-    this.draw();
-  }
-
-  draw() {
-    if (!this.needDraw || (!this.video.played && (this.video.paused || this.video.ended))) {
-      return false;
-    }
-    this.context.drawImage(this.video, 0, 0, this.cw, this.ch);
-
-    return requestAnimationFrame(() => this.draw());
-  }
-
-  drawStop() {
-    this.needDraw = false;
-  }
-}
-
 export class Popup {
   constructor(el) {
     this.el = el;
@@ -50,7 +13,6 @@ export class Popup {
 
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     this.audioAnalyser = AudioContext ? new AudioAnalyser(this.indicator, AudioContext) : null;
-    // this.canvasVideo = new CanvasVideo(this.video);
 
     this.brightness = '';
     this.contrast = '';
@@ -91,7 +53,7 @@ export class Popup {
   }
 
   setFilter() {
-    this.video.style.filter = `brightness(${this.brightness}%) contrast(${this.contrast}%)`;
+    this.sourceEl.style.filter = `brightness(${this.brightness}%) contrast(${this.contrast}%)`;
   }
 
   init() {
@@ -108,7 +70,6 @@ export class Popup {
   }
 
   clear() {
-    // this.canvasVideo.drawStop();
     this.audioAnalyser.drop();
   }
 
@@ -118,7 +79,7 @@ export class Popup {
     this.init();
 
     requestAnimationFrame(() => this.el.classList.toggle('popup_open'));
-    // this.canvasVideo.init(this.sourceEl);
+
     this.sourceEl.pause();
     this.sourceBaseDestination = this.sourceEl.parentElement;
     this.video.appendChild(this.sourceEl);
@@ -128,7 +89,6 @@ export class Popup {
 
   close() {
     this.sourceEl.pause();
-    this.sourceEl.style.filter = this.video.style.filter;
 
     requestAnimationFrame(() => this.el.classList.toggle('popup_open'));
     setTimeout(() => {
