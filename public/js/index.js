@@ -58,12 +58,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const url = new URL(href);
   const page = url.searchParams.get('page');
 
-  if (page === 'video') {
+  if (page === 'events') {
+    title.textContent = 'Лента событий';
+    setContent(root);
+  } else {
     title.textContent = 'Видео';
     root.classList.add('content__layout_four-rows');
     setContentVideo(root);
-  } else {
-    title.textContent = 'Лента событий';
-    setContent(root);
   }
 });

@@ -1,4 +1,4 @@
-import { Popup } from './popup';
+import Popup from './popup';
 
 export function initVideoSource(video, url) {
   if (Hls.isSupported()) {
@@ -11,10 +11,11 @@ export function initVideoSource(video, url) {
   } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
     video.src = url;
     video.addEventListener('loadedmetadata', () => {
-      console.log('loadedmetadata')
       video.play();
     });
   }
+
+  video.muted = true; // for Firefox
 }
 
 export function initVideoContainerHandlers() {

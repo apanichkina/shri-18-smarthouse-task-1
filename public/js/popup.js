@@ -1,8 +1,8 @@
-import { AudioAnalyser } from './audioAnalyser';
+import AudioAnalyser from './audioAnalyser';
 
 const px = value => `${value}px`;
 
-export class Popup {
+export default class Popup {
   constructor(el) {
     this.el = el;
     this.button = el.querySelector('.button');
@@ -18,6 +18,8 @@ export class Popup {
     this.contrast = '';
     this.sourceEl = null;
     this.sourceBaseDestination = null;
+    this.isOpen = false;
+    this.animationDuration = 2000;
 
     this.initListeners();
   }
@@ -60,6 +62,7 @@ export class Popup {
     this.audioAnalyser.init(this.sourceEl);
     this.initFilter();
     const contentRect = this.sourceEl.getBoundingClientRect();
+    // set popup start size
     Object.assign(this.el.style, {
       top: px(contentRect.top),
       left: px(contentRect.left),
@@ -74,28 +77,65 @@ export class Popup {
   }
 
   open(sourceEl) {
+    if (this.isOpen) {
+      return;
+    } else {
+      this.isOpen = true;
+    }
+
     this.sourceEl = sourceEl;
 
     this.init();
 
     requestAnimationFrame(() => this.el.classList.toggle('popup_open'));
 
-    this.sourceEl.pause();
     this.sourceBaseDestination = this.sourceEl.parentElement;
+    // reserve place at this.sourceEl paren element
+    Object.assign(this.sourceBaseDestination.style, {
+      height: px(this.sourceBaseDestination.getBoundingClientRect().height),
+    });
+
+    this.sourceEl.pause();
     this.video.appendChild(this.sourceEl);
     this.sourceEl.play();
     this.sourceEl.muted = false;
   }
 
   close() {
+    if (!this.isOpen) {
+      return;
+    }
+
     this.sourceEl.pause();
+
+    const destinationRect = this.sourceBaseDestination.getBoundingClientRect();
+    // set popup end size
+    Object.assign(this.el.style, {
+      top: px(destinationRect.top),
+      left: px(destinationRect.left),
+      width: px(destinationRect.width),
+      height: px(this.video.clientHeight * destinationRect.width / this.video.clientWidth),
+    });
+
+    // reserve place at this.sourceEl paren element
+    Object.assign(this.sourceBaseDestination.style, {
+      height: px(Math.floor(this.video.clientHeight * destinationRect.width / this.video.clientWidth)),
+    });
 
     requestAnimationFrame(() => this.el.classList.toggle('popup_open'));
     setTimeout(() => {
       this.sourceBaseDestination.appendChild(this.sourceEl);
+
+      // clear reserved place at this.sourceEl paren element
+      Object.assign(this.sourceBaseDestination.style, {
+        height: null,
+      });
+
       this.el.style.display = 'none';
       this.sourceEl.play();
-    }, 2000);
+      this.isOpen = false;
+    }, this.animationDuration);
+
     this.sourceEl.muted = true;
     this.clear();
   }

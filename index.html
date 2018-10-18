@@ -99,7 +99,7 @@
 <template>
   <div class="video-container card card_m">
     <div class="video-content">
-      <video class="video" controls muted autoplay data-fullscreen="on" style="filter: contrast(50%);"></video>
+      <video class="video" muted autoplay data-fullscreen="on" style="filter: contrast(50%);"></video>
     </div>
   </div>
 </template>
@@ -114,13 +114,13 @@
     <button class="nav__button icon-button" type="button"></button>
     <nav class="nav text_m text_bold">
       <ul class="nav-content">
-        <li class="nav__tab nav__tab_active">
-          <a href="/" class="link">
+        <li class="nav__tab">
+          <a href="/?page=events" class="link">
             События
           </a>
         </li>
-        <li class="nav__tab">
-          <a href="/?page=video" class="link">
+        <li class="nav__tab nav__tab_active">
+          <a href="/" class="link">
             Камеры
           </a>
         </li>
@@ -183,26 +183,30 @@
     </div>
   </footer>
 </div>
-<div id="popup">
-  <!--<canvas id="c" class="popup_video"></canvas>-->
-  <div class="popup_video"></div>
-  <canvas id="canvasPopup" class='popup_audio-indicator' width="128" height="64" title="Press Play!"></canvas>
-  <div class="video-control__wrapper">
-    <div class="video-control">
-      <input type="range" class="music__volume-bar brightness-bar" title="brightness" min="50" max="150" value="100" step="1">
-      <span class="music__volume-value brightness-value"></span>
+<div id="popup" class="popup">
+  <div class="popup__content">
+    <div class="popup__controls popup__controls_top video-control__wrapper">
+      <div class="popup__control">
+        <label for="brightness">Яркость</label>
+        <input id="brightness" type="range" class="music__volume-bar brightness-bar" title="brightness" name="brightness" min="50" max="150" value="100" step="1">
+        <span class="music__volume-value brightness-value"></span>
+      </div>
+      <div class="popup__control">
+        <label for="contrast">Контраст</label>
+        <input id="contrast" type="range" class="music__volume-bar contrast-bar" title="contrast" name="contrast" min="50" max="500" value="50" step="1">
+        <span class="music__volume-value contrast-value"></span>
+      </div>
     </div>
-    <div class="video-control">
-      <input type="range" class="music__volume-bar contrast-bar" title="contrast" min="50" max="500" value="50" step="1">
-      <span class="music__volume-value contrast-value"></span>
-    </div>
-    <div class="video-control">
-      <button class="button text_bold">
-        Все камеры
-      </button>
-    </div>
-    <div class="video-control">
-      <canvas class="theCanvas" width="128" height="64" title="Press Play!"></canvas>
+    <div class="popup_video"></div>
+    <div class="popup__controls popup__controls_bottom">
+      <div class="popup__control">
+        <canvas class='popup_audio-indicator' width="128" height="54" title="Press Play!"></canvas>
+      </div>
+      <div class="popup__control">
+        <button class="button text_bold">
+          Все камеры
+        </button>
+      </div>
     </div>
   </div>
 </div>

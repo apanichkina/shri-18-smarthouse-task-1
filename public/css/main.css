@@ -8,6 +8,7 @@
   --card-inner-padding-m: 16px;
   --card-inner-padding-xs: 10px;
   --color-text: #333;
+  --color-text-light: #fff;
   --color-text-secondary: #858585;
   --color-accent: #ffd93e;
   --block-border-radius: 20px;
@@ -112,7 +113,7 @@ body {
 }
 
 .content__layout_four-rows {
-  grid-template-rows: repeat(4, 1fr);
+  /*grid-template-rows: repeat(4, 1fr);*/
 }
 
 @media (--less-than-1199-viewport) {

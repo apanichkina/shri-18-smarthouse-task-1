@@ -119,6 +119,7 @@ html, body {
   --card-inner-padding-m: 16px;
   --card-inner-padding-xs: 10px;
   --color-text: #333;
+  --color-text-light: #fff;
   --color-text-secondary: #858585;
   --color-accent: #ffd93e;
   --block-border-radius: 20px;
@@ -238,8 +239,7 @@ html, body {
 }
 
 .content__layout_four-rows {
-  -ms-grid-rows: (1fr)[4];
-      grid-template-rows: repeat(4, 1fr);
+  /*grid-template-rows: repeat(4, 1fr);*/
 }
 
 @media (max-width: 1199px) {
@@ -496,6 +496,17 @@ html, body {
   background-color: #fafafa;
   background-color: var(--color-white-dirty);
   padding: 0;
+}
+
+.video-container.card {
+  border-radius: 0;
+  background-color: transparent;
+}
+
+.video-container.card:hover {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  background-color: transparent;
 }
 
 .card_l {
@@ -1208,66 +1219,23 @@ input[type=range]:focus {
 
 .video {
   width: 100%;
-  /*width: 300px;*/
   /*object-fit: fill;*/
   /*height: 100%;*/
-  /*-webkit-transition: width 2s, height 2s; !* For Safari 3.1 to 6.0 *!*/
-  /*transition: width 2s, height 2s;*/
-  -webkit-transition: transform 2s; /* For Safari 3.1 to 6.0 */
-  -webkit-transition: -webkit-transform 2s;
-  transition: -webkit-transform 2s;
-  transition: transform 2s;
-  transition: transform 2s, -webkit-transform 2s;
-}
-
-.video-control {
-  -webkit-transition: transform 2s; /* For Safari 3.1 to 6.0 */
-  -webkit-transition: -webkit-transform 2s;
-  transition: -webkit-transform 2s;
-  transition: transform 2s;
-  transition: transform 2s, -webkit-transform 2s;
-}
-
-.video-control__wrapper {
-  /*display: none;*/
 }
 
 .video-content {
   width: 100%;
   height: 100%;
-  background: #979797;
-  /*top: 325px;*/
-  /*right: 0;*/
-  /*margin: 0 auto;*/
-  /*padding: 40px;*/
-  /*bottom: 30px;*/
 }
 
-.video-content_big {
-  /*position: fixed;*/
-  /*transform: translate3d(-50, -50%, 0) scale(2);*/
-  -webkit-transform-origin: top left;
-          transform-origin: top left;
-  z-index: 3;
-  /*transform: translateZ(0);*/
-  -webkit-transition: 2s linear;
-  transition: 2s linear;
-}
-
-.video-content_big .video {
-  /*width: 800px;*/
-  /*height: auto;*/
-  /*transform: scale(1.2);*/
-  /*transform-origin: left;*/
-}
-
-#popup {
+.popup {
   display: none;
-  z-index: 333333;
+  z-index: 22;
   position: fixed;
-  background: #ffd93e;
-  -webkit-transition: all 2s ease;
-  transition: all 2s ease;
+  background: #333;
+  background: var(--color-black);
+  -webkit-transition: all 1s ease;
+  transition: all 1s ease;
   overflow: hidden;
 }
 
@@ -1278,14 +1246,76 @@ input[type=range]:focus {
   right: 0 !important;
   height: 100% !important;
   width: 100% !important;
-  -webkit-transition: all 2s ease;
-  transition: all 2s ease;
+  -webkit-transition: all 1s ease;
+  transition: all 1s ease;
   display: block;
 }
 
-#c {
-  top: 0;
-  left: 0;
+.popup__content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.popup_video {
+  /*z-index: 23;*/
+}
+
+.popup__controls {
   width: 100%;
-  max-width: 628px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  color: #fff;
+  color: var(--color-text-light);
+  padding: 10px;
+  padding: var(--card-inner-padding-xs);
+}
+
+.popup__control {
+}
+
+@media (max-width: 470px) {
+  .popup__controls {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+
+  .popup__control {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    text-align: center;
+  }
+
+  .popup__control + .popup__control {
+    margin-top: 10px;
+    margin-top: var(--card-inner-padding-xs);
+  }
 }

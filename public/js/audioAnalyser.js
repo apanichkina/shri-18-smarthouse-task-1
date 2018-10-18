@@ -1,4 +1,4 @@
-export class AudioAnalyser {
+export default class AudioAnalyser {
   constructor(canvas, AudioContext) {
     this.audioContext = new AudioContext();
     this.source = null;
@@ -11,7 +11,7 @@ export class AudioAnalyser {
     this.canvasContext = canvas.getContext('2d');
 
     this.canvasContext.lineWidth = 1;
-    this.canvasContext.strokeStyle = 'rgba(0, 0, 0, 1)';
+    this.canvasContext.strokeStyle = '#fff';
     this.canvasWidth = canvas.width;
     this.canvasHeight = canvas.height;
   }
@@ -60,4 +60,3 @@ export class AudioAnalyser {
     }
   }
 }
-
