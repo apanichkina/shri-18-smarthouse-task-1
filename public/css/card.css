@@ -12,6 +12,16 @@
   padding: 0;
 }
 
+.video-container.card {
+  border-radius: 0;
+  background-color: transparent;
+}
+
+.video-container.card:hover {
+  box-shadow: none;
+  background-color: transparent;
+}
+
 .card_l {
   grid-column: auto / span 4;
   grid-row: auto / span 3;
@@ -19,7 +29,7 @@
 
 .card_m {
   grid-column: auto / span 3;
-  grid-row: auto;
+  grid-row: auto / span 2;
 }
 
 .card_s {

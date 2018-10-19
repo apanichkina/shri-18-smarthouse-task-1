@@ -5,3 +5,5 @@ rules:
 env:
   browser: true
   node: true
+globals:
+  Hls: true

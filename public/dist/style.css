@@ -118,6 +118,8 @@ html, body {
   --card-inner-padding: 20px;
   --card-inner-padding-m: 16px;
   --card-inner-padding-xs: 10px;
+  --color-text: #333;
+  --color-text-light: #fff;
   --color-text-secondary: #858585;
   --color-accent: #ffd93e;
   --block-border-radius: 20px;
@@ -149,7 +151,7 @@ html, body {
   padding: 0;
   height: 100%;
   color: #333;
-  color: var(--color-black);
+  color: var(--color-text);
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
@@ -217,6 +219,9 @@ html, body {
   max-width: 1000px;
   margin: 0 auto;
   width: 75%;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0 auto;
+          flex: 1 0 auto;
 }
 
 .content__title {
@@ -234,6 +239,10 @@ html, body {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+}
+
+.content__layout_four-rows {
+  /*grid-template-rows: repeat(4, 1fr);*/
 }
 
 @media (max-width: 1199px) {
@@ -343,10 +352,21 @@ html, body {
   margin: 3px 0 3px 20px;
   cursor: pointer;
   vertical-align: top;
-  opacity: 0.6;
 }
 
-.nav__tab_active {
+.nav__tab .link {
+  opacity: 0.6;
+  color: #333;
+  color: var(--color-text);
+}
+
+.nav__tab .link:hover {
+  color: #333 !important;
+  color: var(--color-text) !important;
+  opacity: 1 !important;
+}
+
+.nav__tab_active .link {
   opacity: 1;
 }
 
@@ -481,6 +501,17 @@ html, body {
   padding: 0;
 }
 
+.video-container.card {
+  border-radius: 0;
+  background-color: transparent;
+}
+
+.video-container.card:hover {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  background-color: transparent;
+}
+
 .card_l {
   grid-column: auto / span 4;
   grid-row: auto / span 3;
@@ -488,7 +519,7 @@ html, body {
 
 .card_m {
   grid-column: auto / span 3;
-  grid-row: auto;
+  grid-row: auto / span 2;
 }
 
 .card_s {
@@ -1186,5 +1217,108 @@ input[type=range]:focus {
 @media (max-width: 470px) {
   .chart-container {
     max-width: 250px;
+  }
+}
+
+.video {
+  width: 100%;
+  /*object-fit: fill;*/
+  /*height: 100%;*/
+}
+
+.video-content {
+  width: 100%;
+  height: 100%;
+}
+
+.popup {
+  display: none;
+  z-index: 22;
+  position: fixed;
+  background: #333;
+  background: var(--color-black);
+  -webkit-transition: all 1s ease;
+  transition: all 1s ease;
+  overflow: hidden;
+}
+
+.popup_open {
+  top: 0 !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  height: 100% !important;
+  width: 100% !important;
+  -webkit-transition: all 1s ease;
+  transition: all 1s ease;
+  display: block;
+}
+
+.popup__content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.popup_video {
+  /*z-index: 23;*/
+}
+
+.popup__controls {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  color: #fff;
+  color: var(--color-text-light);
+  padding: 10px;
+  padding: var(--card-inner-padding-xs);
+}
+
+.popup__control {
+}
+
+@media (max-width: 470px) {
+  .popup__controls {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+
+  .popup__control {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    text-align: center;
+  }
+
+  .popup__control + .popup__control {
+    margin-top: 10px;
+    margin-top: var(--card-inner-padding-xs);
   }
 }

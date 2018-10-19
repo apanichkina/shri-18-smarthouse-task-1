@@ -1,82 +1,15 @@
 import '../css/index.css';
-import { Chart } from 'chart.js';
-import data from '../mocks/events';
+import eventData from '../mocks/events';
+import videoData from '../mocks/videos';
 import fillCard from './cardTemplate';
+import drawChart from './chart';
 import { InteractiveElement } from './pointer';
-
-const chartBackgroundColor = {
-  water: 'rgba(54, 162, 235, 0.2)',
-  electricity: 'rgba(255, 206, 86, 0.2)',
-  gas: 'rgba(255, 159, 64, 0.2)',
-  default: 'rgba(255,99,132, 0.2)',
-};
-
-const chartBorderColor = {
-  water: 'rgba(54, 162, 235, 1)',
-  electricity: 'rgba(255, 206, 86, 1)',
-  gas: 'rgba(255, 159, 64, 1)',
-  default: 'rgba(255,99,132, 1)',
-};
-
-
-function prepareDataForChart(chartData) {
-  const defaultBackgroundColor = chartBackgroundColor.default;
-  const defaultBorderColor = chartBorderColor.default;
-
-  const result = [];
-
-  for (const item of chartData) {
-    Object.keys(item).forEach((key) => {
-      const localResult = { label: key, data: [], borderWidth: 1 };
-
-      for (const param of item[key]) {
-        localResult.backgroundColor = chartBackgroundColor[key] || defaultBackgroundColor;
-        localResult.borderColor = chartBorderColor[key] || defaultBorderColor;
-        localResult.data.push({ x: new Date(Number(param[0])), y: param[1] });
-      }
-      result.push(localResult);
-    });
-  }
-
-  return result;
-}
-
-function drawChart(container, datasets) {
-  const ctx = container.getContext('2d');
-
-  // TODO destroy chart
-  return new Chart(ctx, {
-    type: 'line',
-    data: {
-      datasets: datasets,
-    },
-    options: {
-      responsive: true,
-
-      scales: {
-        xAxes: [{
-          type: 'time',
-          time: {
-            displayFormats: {
-              minute: 'h:mm',
-            },
-          },
-        }],
-        yAxes: [{
-          ticks: {
-            beginAtZero: true,
-          },
-        }],
-      },
-    },
-  });
-}
-
+import { initVideoSource, initVideoContainerHandlers } from './video';
 
 function setContent(parentEl) {
   const template = document.getElementsByTagName('template')[0];
   const cardTmpl = template.content.querySelector('div.card');
-  const content = data.events || [];
+  const content = eventData.events || [];
   let card = null;
 
   for (let i = 0; i < content.length; i++) {
@@ -87,11 +20,7 @@ function setContent(parentEl) {
 
     if (content[i].data && content[i].data.type === 'graph') {
       const chartContainer = document.getElementById('chart');
-      const parsedData = prepareDataForChart(content[i].data.values);
-
-      if (parsedData.length && chartContainer) {
-        drawChart(chartContainer, parsedData);
-      }
+      drawChart(chartContainer, content[i].data.values);
     }
   }
 
@@ -105,7 +34,36 @@ function setContent(parentEl) {
   }
 }
 
+function setContentVideo(parentEl) {
+  const template = document.getElementsByTagName('template')[2];
+  const videoContainerTmpl = template.content.querySelector('.video-container');
+  const content = videoData.source || [];
+  let videoContainer = null;
+  let video = null;
+
+  for (let i = 0; i < content.length; i++) {
+    videoContainer = document.importNode(videoContainerTmpl, true);
+    video = videoContainer.querySelector('.video');
+    initVideoSource(video, content[i]);
+    parentEl.appendChild(videoContainer);
+  }
+
+  initVideoContainerHandlers();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const root = document.getElementById('content__layout');
-  setContent(root);
+  const title = document.getElementsByClassName('content__title')[0];
+  const { href } = window.location;
+  const url = new URL(href);
+  const page = url.searchParams.get('page');
+
+  if (page === 'events') {
+    title.textContent = 'Лента событий';
+    setContent(root);
+  } else {
+    title.textContent = 'Видеонаблюдение';
+    root.classList.add('content__layout_four-rows');
+    setContentVideo(root);
+  }
 });

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
   <title>Яндекс Дом</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -8,6 +8,7 @@
   <link rel="shortcut icon" href="public/images/faviconDirect.ico" type="image/x-icon">
   <link rel="stylesheet" href="public/dist/style.css" type="text/css"/>
   <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 <body>
 <script src="public/dist/index.js" type="text/javascript"></script>
@@ -94,6 +95,17 @@
 
 <!---->
 
+<!-- Video data -->
+<template>
+  <div class="video-container card card_m">
+    <div class="video-content">
+      <video class="video" muted autoplay data-fullscreen="on" style="filter: contrast(90%);"></video>
+    </div>
+  </div>
+</template>
+
+<!---->
+
 <div class="root">
   <header class="header container">
         <span class="logo">
@@ -102,23 +114,32 @@
     <button class="nav__button icon-button" type="button"></button>
     <nav class="nav text_m text_bold">
       <ul class="nav-content">
+        <li class="nav__tab">
+          <a href="/?page=events" class="link">
+            События
+          </a>
+        </li>
         <li class="nav__tab nav__tab_active">
-          События
+          <a href="/" class="link">
+            Видеонаблюдение
+          </a>
         </li>
         <li class="nav__tab">
-          Сводка
+          <a href="/" class="link">
+            Устройства
+          </a>
         </li>
         <li class="nav__tab">
-          Устройства
-        </li>
-        <li class="nav__tab">
-          Сценарии
+          <a href="/" class="link">
+            Сценарии
+          </a>
         </li>
       </ul>
     </nav>
   </header>
   <main class="content container">
     <div class="content__title text_bold">Лента событий</div>
+
     <div id="content__layout" class="content__layout">
       <!-- content -->
     </div>
@@ -161,6 +182,33 @@
       </div>
     </div>
   </footer>
+</div>
+<div id="popup" class="popup">
+  <div class="popup__content">
+    <div class="popup__controls popup__controls_top video-control__wrapper">
+      <div class="popup__control">
+        <label for="brightness">Яркость</label>
+        <input id="brightness" type="range" class="music__volume-bar brightness-bar" title="brightness" name="brightness" min="50" max="150" value="100" step="1">
+        <span class="music__volume-value brightness-value"></span>
+      </div>
+      <div class="popup__control">
+        <label for="contrast">Контраст</label>
+        <input id="contrast" type="range" class="music__volume-bar contrast-bar" title="contrast" name="contrast" min="50" max="500" value="100" step="1">
+        <span class="music__volume-value contrast-value"></span>
+      </div>
+    </div>
+    <div class="popup_video"></div>
+    <div class="popup__controls popup__controls_bottom">
+      <div class="popup__control">
+        <canvas class='popup_audio-indicator' width="128" height="54" title="Press Play!"></canvas>
+      </div>
+      <div class="popup__control">
+        <button class="button text_bold">
+          Все камеры
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 </body>
 </html>
