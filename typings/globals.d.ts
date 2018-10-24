@@ -8,3 +8,5 @@ interface IDictionary<T> {
 }
 
 declare type Booleanum = 0 | 1;
+
+declare const Hls: any;
