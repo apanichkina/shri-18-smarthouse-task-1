@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "typeRoots": [
+      "node_modules/@types",
+      "typings"
+    ],
+    "paths": {
+      "*" : ["./node_modules/@types/*", "*"]
+    },
+    "target": "es5",
+    "module": "es2015",
+    "jsx": "react",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "removeComments": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "lib": [ "dom", "es6", "dom.iterable", "es2017" ],
+    "pretty": true
+  },
+  "exclude": [
+    "**/node_modules/*",
+    "tests"
+  ]
+}
