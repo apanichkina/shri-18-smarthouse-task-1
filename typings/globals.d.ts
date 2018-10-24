@@ -1,5 +1,10 @@
-interface IDictionary<T> {
-	[key: string]: T
+declare module '*.svg' {
+  const image: string;
+  export default image;
 }
 
-declare type Booleanum = 0 | 1
+interface IDictionary<T> {
+  [key: string]: T
+}
+
+declare type Booleanum = 0 | 1;

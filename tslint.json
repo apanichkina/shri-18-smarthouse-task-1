@@ -1,7 +1,7 @@
 {
   "extends": ["tslint:latest"],
   "rules": {
-    "indent": [true, "tabs", 4],
+    "indent": [true, "spaces", 2],
     "quotemark": [true, "single"],
     "ordered-imports": false,
     "trailing-comma": [true, {"multiline": "always", "singleline": "never"}],
@@ -12,7 +12,7 @@
     "no-shadowed-variable": false,
     "no-empty-interface": false,
     "no-object-literal-type-assertion": false,
-    "semicolon": [true, "never"],
+    "semicolon": [true, "always", "ignore-interfaces"],
     "only-arrow-functions": [true, "allow-declarations", "allow-named-functions"],
     "no-debugger": false,
     "prefer-conditional-expression": false,
