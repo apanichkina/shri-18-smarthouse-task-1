@@ -22,7 +22,13 @@ function prepareDataForChart(chartData) {
 
   for (const item of chartData) {
     Object.keys(item).forEach((key) => {
-      const localResult = { label: key, data: [], borderWidth: 1 };
+      const localResult = {
+        label: key,
+        data: [],
+        borderWidth: 1,
+        borderColor: defaultBorderColor,
+        backgroundColor: defaultBackgroundColor,
+      };
 
       for (const param of item[key]) {
         localResult.backgroundColor = chartBackgroundColor[key] || defaultBackgroundColor;

@@ -17,6 +17,7 @@
     "no-debugger": false,
     "prefer-conditional-expression": false,
     "object-literal-key-quotes": false,
-    "no-implicit-dependencies": [true, "dev"]
+    "no-implicit-dependencies": [true, "dev"],
+    "prefer-for-of": false
   }
 }

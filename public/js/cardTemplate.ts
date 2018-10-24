@@ -1,8 +1,6 @@
-import { Chart } from 'chart.js';
-import getIconSrc from './icons';
+import getIconSrc from './icons.ts';
 
 const TEMPLATE = document.getElementsByTagName('template');
-
 
 const INDICATOR_NAME_RU = {
   temperature: 'Температура',
@@ -18,21 +16,22 @@ const SEC_PER_MIN = 60;
 
 function secToTime(seconds) {
   const min = Math.floor(seconds / SEC_PER_MIN);
-  let sec = seconds % SEC_PER_MIN;
+  const sec = seconds % SEC_PER_MIN;
+  let secValid = String(sec);
 
   if (sec < 10) {
-    sec = `0${sec}`;
+    secValid = `0${sec}`;
   }
 
-  return [min, sec].join(':');
+  return [min, secValid].join(':');
 }
 
-function timeToSec(time) {
+function timeToSec(time): string {
   const timeParts = time.split(':');
   const min = Number(timeParts[0]) * SEC_PER_MIN;
   const sec = Number(timeParts[1]);
 
-  return min + sec;
+  return String(min + sec);
 }
 
 function fillIndicator(container, data) {
@@ -57,7 +56,6 @@ function fillCardDataEl(type, data) {
     const buttonTmpl = template.content.querySelector('button.button');
     const controls = document.importNode(controlsTmpl, true);
 
-
     for (let i = 0; i < data.buttons.length; i++) {
       const button = document.importNode(buttonTmpl, true);
       button.textContent = data.buttons[i];
@@ -77,15 +75,14 @@ function fillCardDataEl(type, data) {
     result.push(indicators);
   }
 
-
   if (data.track && data.volume) {
     const musicTmpl = template.content.querySelector('.music');
     const music = document.importNode(musicTmpl, true);
-    const image = music.querySelector('.music__album-cover');
+    const image: HTMLInputElement = music.querySelector('.music__album-cover');
     const name = music.querySelector('.music__name');
-    const volumeBar = music.querySelector('.music__volume-bar');
+    const volumeBar: HTMLInputElement = music.querySelector('.music__volume-bar');
     const volumeValue = music.querySelector('.music__volume-value');
-    const trackBar = music.querySelector('.music__track-bar');
+    const trackBar: HTMLInputElement = music.querySelector('.music__track-bar');
     const trackLength = music.querySelector('.music__track-length');
 
     image.src = data.albumcover;
@@ -94,8 +91,10 @@ function fillCardDataEl(type, data) {
     volumeValue.textContent = `${data.volume}%`;
 
     volumeBar.addEventListener('input', (evt) => {
-      if (evt && evt.target) {
-        volumeValue.textContent = `${evt.target.value}%`;
+      const target: EventTarget = evt.target;
+
+      if (target && target instanceof HTMLInputElement) {
+        volumeValue.textContent = `${target.value}%`;
       }
     });
 
@@ -103,8 +102,10 @@ function fillCardDataEl(type, data) {
     trackLength.textContent = data.track.length;
 
     trackBar.addEventListener('input', (evt) => {
-      if (evt && evt.target) {
-        trackLength.textContent = secToTime(evt.target.value);
+      const target: EventTarget = evt.target;
+
+      if (target && target instanceof HTMLInputElement) {
+        trackLength.textContent = secToTime(target.value);
       }
     });
 
@@ -160,7 +161,6 @@ export default function fillCard(card, content) {
       }
     }
   }
-
 
   card.classList.add(`card_${content.size}`);
 }
