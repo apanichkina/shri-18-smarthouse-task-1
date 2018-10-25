@@ -1,8 +1,24 @@
 import AudioAnalyser from './audioAnalyser';
 
-const px = value => `${value}px`;
+const px = (value: number | string): string => `${value}px`;
 
 export default class Popup {
+  public el: HTMLDivElement;
+  public button: HTMLButtonElement;
+  public brightnessControl: HTMLInputElement;
+  public contrastControl: HTMLInputElement;
+  public indicator: HTMLCanvasElement;
+  public video: HTMLDivElement;
+
+  public audioAnalyser: AudioAnalyser;
+
+  public brightness: string;
+  public contrast: string;
+  public sourceEl: HTMLVideoElement;
+  public sourceBaseDestination: HTMLElement;
+  public isOpen: boolean;
+  public animationDuration: number;
+
   constructor(el) {
     this.el = el;
     this.button = el.querySelector('.button');
@@ -11,11 +27,11 @@ export default class Popup {
     this.indicator = el.querySelector('.popup_audio-indicator');
     this.video = el.querySelector('.popup_video');
 
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    this.audioAnalyser = AudioContext ? new AudioAnalyser(this.indicator, AudioContext) : null;
+    const AudioContext = window.AudioContext || webkitAudioContext;
+    this.audioAnalyser = new AudioAnalyser(this.indicator, AudioContext);
 
-    this.brightness = '';
-    this.contrast = '';
+    this.brightness = '100';
+    this.contrast = '100';
     this.sourceEl = null;
     this.sourceBaseDestination = null;
     this.isOpen = false;
@@ -24,29 +40,37 @@ export default class Popup {
     this.initListeners();
   }
 
-  initListeners() {
+  public initListeners(): void {
     this.button.addEventListener('click', () => {
       this.close();
     });
 
     this.brightnessControl.addEventListener('input', (evt) => {
-      this.brightness = evt.target.value;
-      this.setFilter();
+      const target: EventTarget = evt.target;
+
+      if (target && target instanceof HTMLInputElement) {
+        this.brightness = target.value;
+        this.setFilter();
+      }
     });
 
     this.contrastControl.addEventListener('input', (evt) => {
-      this.contrast = evt.target.value;
-      this.setFilter();
+      const target: EventTarget = evt.target;
+
+      if (target && target instanceof HTMLInputElement) {
+        this.contrast = target.value;
+        this.setFilter();
+      }
     });
   }
 
-  initFilter() {
+  public initFilter(): void {
     const styleInitial = this.sourceEl.style.filter || '';
     const contrast = styleInitial.match(/contrast\((\d+)%\)/i);
     const brightness = styleInitial.match(/brightness\((\d+)%\)/i);
 
-    this.contrast = contrast ? contrast[1] : 100;
-    this.brightness = brightness ? brightness[1] : 100;
+    this.contrast = contrast ? contrast[1] : '100';
+    this.brightness = brightness ? brightness[1] : '100';
 
     this.brightnessControl.value = this.brightness;
     this.contrastControl.value = this.contrast;
@@ -54,11 +78,11 @@ export default class Popup {
     this.setFilter();
   }
 
-  setFilter() {
+  public setFilter(): void {
     this.sourceEl.style.filter = `brightness(${this.brightness}%) contrast(${this.contrast}%)`;
   }
 
-  init() {
+  public init(): void {
     this.audioAnalyser.init(this.sourceEl);
     this.initFilter();
     const contentRect = this.sourceEl.getBoundingClientRect();
@@ -72,11 +96,11 @@ export default class Popup {
     });
   }
 
-  clear() {
+  public clear(): void {
     this.audioAnalyser.drop();
   }
 
-  open(sourceEl) {
+  public open(sourceEl: HTMLVideoElement): void {
     if (this.isOpen) {
       return;
     } else {
@@ -101,7 +125,7 @@ export default class Popup {
     this.sourceEl.muted = false;
   }
 
-  close() {
+  public close(): void {
     if (!this.isOpen) {
       return;
     }

@@ -17,7 +17,6 @@ function setContent(parentEl) {
     fillCard(card, content[i]);
     parentEl.appendChild(card);
 
-
     if (content[i].data && content[i].data.type === 'graph') {
       const chartContainer = document.getElementById('chart');
       drawChart(chartContainer, content[i].data.values);
