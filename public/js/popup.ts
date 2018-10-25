@@ -2,6 +2,13 @@ import AudioAnalyser from './audioAnalyser';
 
 const px = (value: number | string): string => `${value}px`;
 
+declare global  {
+  interface Window {
+    AudioContext: typeof AudioContext;
+    webkitAudioContext: typeof AudioContext;
+  }
+}
+
 export default class Popup {
   public el: HTMLDivElement;
   public button: HTMLButtonElement;
@@ -27,7 +34,7 @@ export default class Popup {
     this.indicator = el.querySelector('.popup_audio-indicator');
     this.video = el.querySelector('.popup_video');
 
-    const AudioContext = window.AudioContext || webkitAudioContext;
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
     this.audioAnalyser = new AudioAnalyser(this.indicator, AudioContext);
 
     this.brightness = '100';

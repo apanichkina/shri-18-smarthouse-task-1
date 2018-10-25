@@ -1,4 +1,4 @@
-import getIconSrc from './icons.ts';
+import getIconSrc from './icons';
 
 const TEMPLATE = document.getElementsByTagName('template');
 

@@ -36,7 +36,7 @@ function throttle(func, ms) {
   return wrapper;
 }
 
-function getAngle(p1, p2, useProps) {
+function getAngle(p1: PointerEvent, p2: PointerEvent, useProps): number {
   const props = useProps || PROPS_XY;
 
   const x = p2[props[0]] - p1[props[0]];
@@ -45,7 +45,7 @@ function getAngle(p1, p2, useProps) {
   return Math.atan2(y, x) * 180 / Math.PI;
 }
 
-function getDistance(p1, p2, useProps) {
+function getDistance(p1: PointerEvent, p2: PointerEvent, useProps: string[]): number {
   const props = useProps || PROPS_XY;
 
   const x = p2[props[0]] - p1[props[0]];
@@ -54,10 +54,10 @@ function getDistance(p1, p2, useProps) {
   return Math.sqrt(x * x + y * y);
 }
 
-function getRotation(start, end) {
+function getRotation(start: PointerEvent[], end: PointerEvent[]): number {
   const startAngle = getAngle(start[1], start[0], PROPS_CLIENT_XY);
   const endAngle = getAngle(end[1], end[0], PROPS_CLIENT_XY);
-  let result = '';
+  let result: number = 0;
 
   if (Math.abs(startAngle) >= Math.abs(endAngle)) {
     result = startAngle;
@@ -68,22 +68,54 @@ function getRotation(start, end) {
   return result;
 }
 
-function getScale(start, end) {
+function getScale(start: PointerEvent[], end: PointerEvent[]) {
   const endDistance = getDistance(end[0], end[1], PROPS_CLIENT_XY);
   const startDistance = getDistance(start[0], start[1], PROPS_CLIENT_XY);
 
   return endDistance / startDistance;
 }
+interface INodeState {
+  startPositionX: number
+  startPositionY: number
+  brightness: number
+  dBrightness: number
+  scale: number
+}
 
+interface IGesture {
+  prevX: number,
+  prevY: number,
+  prevTs: number,
+}
 //
+
+declare global  {
+  interface Window {
+    PointerEvent: typeof PointerEvent;
+  }
+}
+
 export default class InteractiveElement {
+  public el: HTMLDivElement;
+  public zoomEl: HTMLDivElement;
+  public brightEl: HTMLInputElement;
+  public img: HTMLImageElement;
+  public parent: HTMLElement;
+  public currentGesture: IGesture;
+  public nodeState: INodeState;
+  public pointers: PointerEvent[];
+  public firstMulti: PointerEvent[];
+  public elClientRect: ClientRect;
+  public imgClientRect: ClientRect;
+  public parentClientRect: ClientRect;
+
   constructor(el, zoomEl, brightEl) {
     if (el && window.PointerEvent) {
       this.el = el;
       this.zoomEl = zoomEl;
       this.brightEl = brightEl;
       this.img = el.querySelector('img');
-      this.parent = this.el.parentNode;
+      this.parent = this.el.parentElement; // TODO Node?
       this.currentGesture = null;
       this.nodeState = {
         startPositionX: 0,
@@ -93,7 +125,7 @@ export default class InteractiveElement {
         scale: 1,
       };
       this.pointers = []; // array of active pointers
-      this.firstMulti = [];// pointers copy ad the moment of start multitouch
+      this.firstMulti = []; // pointers copy ad the moment of start multitouch
       this.elClientRect = null;
       this.imgClientRect = null;
       this.parentClientRect = null;
@@ -101,7 +133,7 @@ export default class InteractiveElement {
   }
 
   // change brightness of this.img
-  updateFilter(dBrightness) {
+  public updateFilter(dBrightness): void {
     const result = this.nodeState.brightness + dBrightness;
 
     this.nodeState = { ...this.nodeState, dBrightness };
@@ -111,7 +143,7 @@ export default class InteractiveElement {
   }
 
   // change zoom of this.el
-  updateScale(dScale) {
+  public updateScale(dScale): void {
     console.log(dScale);
     const {
       scale,
@@ -131,7 +163,7 @@ export default class InteractiveElement {
   }
 
   // change position of this.el
-  updatePosition(dX, dY) {
+  public updatePosition(dX, dY): void {
     console.log('updateTransform', dX, dY, this.img.getBoundingClientRect());
     const {
       startPositionX,
@@ -177,7 +209,7 @@ export default class InteractiveElement {
     };
   }
 
-  onPointerDown(event) {
+  public onPointerDown(event): void {
     if (!this.elClientRect) {
       this.elClientRect = this.el.getBoundingClientRect();
       this.imgClientRect = this.img.getBoundingClientRect();
@@ -202,7 +234,7 @@ export default class InteractiveElement {
     // console.log(event.type);
   }
 
-  onPointerMove(event) {
+  public onPointerMove(event): void {
     if (!this.currentGesture) {
       return;
     }
@@ -218,7 +250,7 @@ export default class InteractiveElement {
     this.selectEvent(event);
   }
 
-  onPointerLeave(event) {
+  public onPointerLeave(event): void {
     for (let i = 0; i < this.pointers.length; ++i) {
       if (this.pointers[i].pointerId === event.pointerId) {
         this.pointers.splice(i, 1);
@@ -231,8 +263,7 @@ export default class InteractiveElement {
     }
   }
 
-
-  checkSwipe(event) {
+  public checkSwipe(event): void {
     console.log(event.type, 'swipe');
 
     const { prevX, prevY } = this.currentGesture;
@@ -249,7 +280,7 @@ export default class InteractiveElement {
     this.currentGesture.prevTs = ts;
   }
 
-  checkRotate(event) {
+  public checkRotate(event): boolean {
     console.log(event.type, 'rotate');
 
     if (!this.firstMulti.length) {
@@ -269,7 +300,7 @@ export default class InteractiveElement {
     return true;
   }
 
-  checkPinch(event) {
+  public checkPinch(event): boolean {
     console.log(event.type, 'pinch');
 
     if (!this.firstMulti.length) {
@@ -282,7 +313,7 @@ export default class InteractiveElement {
     return true;
   }
 
-  selectEvent(event) {
+  public selectEvent(event): void {
     if (!this.pointers.length) {
       return;
     }
@@ -298,7 +329,7 @@ export default class InteractiveElement {
     }
   }
 
-  init() {
+  public init(): void {
     const { dBrightness } = this.nodeState;
 
     this.updateFilter(dBrightness);
@@ -318,4 +349,3 @@ export default class InteractiveElement {
     });
   }
 }
-

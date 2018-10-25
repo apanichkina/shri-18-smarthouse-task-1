@@ -1,8 +1,8 @@
 import '../css/index.css';
 import eventData from '../mocks/events';
 import videoData from '../mocks/videos';
-import fillCard from './cardTemplate.ts';
-import drawChart from './chart.ts';
+import fillCard from './cardTemplate';
+import drawChart from './chart';
 import InteractiveElement from './pointer';
 import { initVideoSource, initVideoContainerHandlers } from './video';
 
