@@ -3,7 +3,7 @@ import eventData from '../mocks/events';
 import videoData from '../mocks/videos';
 import fillCard from './cardTemplate.ts';
 import drawChart from './chart.ts';
-import { InteractiveElement } from './pointer';
+import InteractiveElement from './pointer';
 import { initVideoSource, initVideoContainerHandlers } from './video';
 
 function setContent(parentEl) {
@@ -30,6 +30,7 @@ function setContent(parentEl) {
     const zoom = document.querySelector('#camera .camera-zoom__value');
     const bright = document.querySelector('#camera .camera-bright__value');
     const cameraProcessor = new InteractiveElement(camera, zoom, bright);
+    cameraProcessor.init();
   }
 }
 

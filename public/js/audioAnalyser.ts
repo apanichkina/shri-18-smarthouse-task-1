@@ -1,4 +1,15 @@
 export default class AudioAnalyser {
+  public audioContext: AudioContext;
+  public source: MediaElementAudioSourceNode;
+  public analyser: AnalyserNode;
+  public bufferLength: number;
+  public dataArray: Uint8Array;
+  public canvasContext: CanvasRenderingContext2D;
+  public canvasWidth: number;
+  public canvasHeight: number;
+
+  public alreadyDraw: boolean;
+
   constructor(canvas, AudioContext) {
     this.audioContext = new AudioContext();
     this.source = null;
@@ -14,9 +25,11 @@ export default class AudioAnalyser {
     this.canvasContext.strokeStyle = '#fff';
     this.canvasWidth = canvas.width;
     this.canvasHeight = canvas.height;
+
+    this.alreadyDraw = false;
   }
 
-  init(sourceInput) {
+  public init(sourceInput): void {
     if (sourceInput.mediaElementSource) {
       this.source = sourceInput.mediaElementSource;
     } else {
@@ -31,22 +44,22 @@ export default class AudioAnalyser {
     }
   }
 
-  drop() {
+  public drop(): void {
     this.source.disconnect(this.analyser);
   }
 
-  startDrawing() {
+  public startDrawing(): void {
     this.alreadyDraw = true;
     this.drawAgain();
   }
 
-  drawAgain() {
+  public drawAgain(): void {
     this.canvasContext.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
     requestAnimationFrame(this.drawAgain.bind(this));
 
     this.analyser.getByteFrequencyData(this.dataArray);
 
-    const sliceWidth = this.canvasWidth * 1.0 / this.bufferLength;
+    const sliceWidth = this.canvasWidth / this.bufferLength;
     let x = 0;
 
     for (let i = 0; i < this.bufferLength; i++) {

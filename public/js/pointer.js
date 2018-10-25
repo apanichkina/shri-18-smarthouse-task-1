@@ -76,7 +76,7 @@ function getScale(start, end) {
 }
 
 //
-class InteractiveElement {
+export default class InteractiveElement {
   constructor(el, zoomEl, brightEl) {
     if (el && window.PointerEvent) {
       this.el = el;
@@ -97,7 +97,6 @@ class InteractiveElement {
       this.elClientRect = null;
       this.imgClientRect = null;
       this.parentClientRect = null;
-      this.init();
     }
   }
 
@@ -320,4 +319,3 @@ class InteractiveElement {
   }
 }
 
-export { InteractiveElement };

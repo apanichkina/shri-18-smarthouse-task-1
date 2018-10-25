@@ -9,7 +9,7 @@ const cssExtractTextPlugin = new ExtractTextPlugin('style.css');
 module.exports = {
   mode: 'development',
   cache: false,
-  entry: `${PUBLIC_PATH}/js/index.js`,
+  entry: `${PUBLIC_PATH}/js/index.ts`,
   output: {
     path: `${PUBLIC_PATH}/dist`,
     filename: 'index.js',
