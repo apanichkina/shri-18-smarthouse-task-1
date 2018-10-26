@@ -1,15 +1,13 @@
-const PROPS_XY = ['x', 'y'];
-const PROPS_CLIENT_XY = ['clientX', 'clientY'];
 const MIN_SCALE = 1;
 const MAX_SCALE = 10;
 
 // helpers
 
-function throttle(func, ms) {
+function throttle(func: (...args: any[]) => void, ms: number) {
   // https://learn.javascript.ru/task/throttle
   let isThrottled = false;
-  let savedArgs;
-  let savedThis;
+  let savedArgs: any;
+  let savedThis: void;
 
   function wrapper() {
     if (isThrottled) { // (2)
@@ -28,7 +26,7 @@ function throttle(func, ms) {
       if (savedArgs) {
         wrapper.apply(savedThis, savedArgs);
         savedArgs = null;
-        savedThis = null;
+        savedThis = void 0;
       }
     }, ms);
   }
@@ -36,27 +34,23 @@ function throttle(func, ms) {
   return wrapper;
 }
 
-function getAngle(p1: PointerEvent, p2: PointerEvent, useProps): number {
-  const props = useProps || PROPS_XY;
-
-  const x = p2[props[0]] - p1[props[0]];
-  const y = p2[props[1]] - p1[props[1]];
+function getAngle(p1: PointerEvent, p2: PointerEvent): number {
+  const x = p2.clientX - p1.clientX;
+  const y = p2.clientY - p1.clientY;
 
   return Math.atan2(y, x) * 180 / Math.PI;
 }
 
-function getDistance(p1: PointerEvent, p2: PointerEvent, useProps: string[]): number {
-  const props = useProps || PROPS_XY;
-
-  const x = p2[props[0]] - p1[props[0]];
-  const y = p2[props[1]] - p1[props[1]];
+function getDistance(p1: PointerEvent, p2: PointerEvent): number {
+  const x = p2.clientX - p1.clientX;
+  const y = p2.clientY - p1.clientY;
 
   return Math.sqrt(x * x + y * y);
 }
 
 function getRotation(start: PointerEvent[], end: PointerEvent[]): number {
-  const startAngle = getAngle(start[1], start[0], PROPS_CLIENT_XY);
-  const endAngle = getAngle(end[1], end[0], PROPS_CLIENT_XY);
+  const startAngle = getAngle(start[1], start[0]);
+  const endAngle = getAngle(end[1], end[0]);
   let result: number = 0;
 
   if (Math.abs(startAngle) >= Math.abs(endAngle)) {
@@ -69,8 +63,8 @@ function getRotation(start: PointerEvent[], end: PointerEvent[]): number {
 }
 
 function getScale(start: PointerEvent[], end: PointerEvent[]) {
-  const endDistance = getDistance(end[0], end[1], PROPS_CLIENT_XY);
-  const startDistance = getDistance(start[0], start[1], PROPS_CLIENT_XY);
+  const endDistance = getDistance(end[0], end[1]);
+  const startDistance = getDistance(start[0], start[1]);
 
   return endDistance / startDistance;
 }
@@ -99,23 +93,22 @@ export default class InteractiveElement {
   public el: HTMLDivElement;
   public zoomEl: HTMLDivElement;
   public brightEl: HTMLInputElement;
-  public img: HTMLImageElement;
-  public parent: HTMLElement;
-  public currentGesture: IGesture;
+  public img: HTMLImageElement | null;
+  public parent: HTMLElement | null;
+  public currentGesture: IGesture | null;
   public nodeState: INodeState;
   public pointers: PointerEvent[];
   public firstMulti: PointerEvent[];
-  public elClientRect: ClientRect;
-  public imgClientRect: ClientRect;
-  public parentClientRect: ClientRect;
+  public elClientRect: ClientRect | null;
+  public imgClientRect: ClientRect | null;
+  public parentClientRect: ClientRect | null;
 
-  constructor(el, zoomEl, brightEl) {
-    if (el && window.PointerEvent) {
+  constructor(el: HTMLDivElement, zoomEl: HTMLDivElement, brightEl: HTMLInputElement) {
       this.el = el;
       this.zoomEl = zoomEl;
       this.brightEl = brightEl;
       this.img = el.querySelector('img');
-      this.parent = this.el.parentElement; // TODO Node?
+      this.parent = this.el.parentElement;
       this.currentGesture = null;
       this.nodeState = {
         startPositionX: 0,
@@ -129,42 +122,46 @@ export default class InteractiveElement {
       this.elClientRect = null;
       this.imgClientRect = null;
       this.parentClientRect = null;
-    }
+
   }
 
   // change brightness of this.img
-  public updateFilter(dBrightness): void {
-    const result = this.nodeState.brightness + dBrightness;
+  private updateFilter(dBrightness: number): void {
+    if (this.img) {
+      const result = this.nodeState.brightness + dBrightness;
 
-    this.nodeState = { ...this.nodeState, dBrightness };
-    this.img.style.filter = `brightness(${result}%)`;
+      this.nodeState = { ...this.nodeState, dBrightness };
+      this.img.style.filter = `brightness(${result}%)`;
 
-    this.brightEl.textContent = `${result.toFixed(2)}%`;
+      this.brightEl.textContent = `${result.toFixed(2)}%`;
+    }
   }
 
   // change zoom of this.el
-  public updateScale(dScale): void {
+  private updateScale(dScale: number = 1): void {
     console.log(dScale);
-    const {
-      scale,
-    } = this.nodeState;
-    const scaleValue = scale * (dScale || 1);
+    if (this.img) {
+      const {
+        scale,
+      } = this.nodeState;
+      const scaleValue = scale * dScale;
 
-    const validScale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, scaleValue));
-    this.img.style.transform = `scale(${validScale})`;
+      const validScale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, scaleValue));
+      this.img.style.transform = `scale(${validScale})`;
 
-    this.nodeState = {
-      ...this.nodeState,
-      scale: validScale,
-    };
+      this.nodeState = {
+        ...this.nodeState,
+        scale: validScale,
+      };
 
-    this.updatePosition(0, 0);
-    this.zoomEl.textContent = validScale.toFixed(2);
+      this.updatePosition(0, 0);
+      this.zoomEl.textContent = validScale.toFixed(2);
+    }
   }
 
   // change position of this.el
-  public updatePosition(dX, dY): void {
-    console.log('updateTransform', dX, dY, this.img.getBoundingClientRect());
+  private updatePosition(dX: number, dY: number): void {
+    console.log('updateTransform', dX, dY);
     const {
       startPositionX,
       startPositionY,
@@ -209,11 +206,17 @@ export default class InteractiveElement {
     };
   }
 
-  public onPointerDown(event): void {
-    if (!this.elClientRect) {
-      this.elClientRect = this.el.getBoundingClientRect();
+  private initializeRects() {
+    this.elClientRect = this.el.getBoundingClientRect();
+    if (this.img && this.parent) {
       this.imgClientRect = this.img.getBoundingClientRect();
       this.parentClientRect = this.parent.getBoundingClientRect();
+    }
+  }
+
+  private onPointerDown(event: PointerEvent): void {
+    if (!this.elClientRect) {
+     this.initializeRects();
     }
     this.el.setPointerCapture(event.pointerId);
 
@@ -234,7 +237,7 @@ export default class InteractiveElement {
     // console.log(event.type);
   }
 
-  public onPointerMove(event): void {
+  private onPointerMove(event: PointerEvent): void {
     if (!this.currentGesture) {
       return;
     }
@@ -250,7 +253,7 @@ export default class InteractiveElement {
     this.selectEvent(event);
   }
 
-  public onPointerLeave(event): void {
+  private onPointerLeave(event: PointerEvent): void {
     for (let i = 0; i < this.pointers.length; ++i) {
       if (this.pointers[i].pointerId === event.pointerId) {
         this.pointers.splice(i, 1);
@@ -263,24 +266,24 @@ export default class InteractiveElement {
     }
   }
 
-  public checkSwipe(event): void {
+  private checkSwipe(event: PointerEvent): void {
     console.log(event.type, 'swipe');
+    if (this.currentGesture) {
+      const { x, y } = event;
+      const dx = x - this.currentGesture.prevX;
+      const dy = y - this.currentGesture.prevY;
 
-    const { prevX, prevY } = this.currentGesture;
-    const { x, y } = event;
-    const dx = x - prevX;
-    const dy = y - prevY;
+      this.updatePosition(dx, dy);
 
-    this.updatePosition(dx, dy);
+      const ts = Date.now();
 
-    const ts = Date.now();
-
-    this.currentGesture.prevX = x;
-    this.currentGesture.prevY = y;
-    this.currentGesture.prevTs = ts;
+      this.currentGesture.prevX = x;
+      this.currentGesture.prevY = y;
+      this.currentGesture.prevTs = ts;
+    }
   }
 
-  public checkRotate(event): boolean {
+  private checkRotate(event: PointerEvent): boolean {
     console.log(event.type, 'rotate');
 
     if (!this.firstMulti.length) {
@@ -300,7 +303,7 @@ export default class InteractiveElement {
     return true;
   }
 
-  public checkPinch(event): boolean {
+  private checkPinch(event: PointerEvent): boolean {
     console.log(event.type, 'pinch');
 
     if (!this.firstMulti.length) {
@@ -313,7 +316,7 @@ export default class InteractiveElement {
     return true;
   }
 
-  public selectEvent(event): void {
+  private selectEvent(event: PointerEvent): void {
     if (!this.pointers.length) {
       return;
     }
@@ -334,7 +337,7 @@ export default class InteractiveElement {
 
     this.updateFilter(dBrightness);
     this.updatePosition(0, 0);
-    this.updateScale(null);
+    this.updateScale();
 
     this.el.addEventListener('pointerdown', throttle(this.onPointerDown, 100).bind(this));
     this.el.addEventListener('pointermove', throttle(this.onPointerMove, 150).bind(this));

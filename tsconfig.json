@@ -8,19 +8,20 @@
     "paths": {
       "*" : ["./node_modules/@types/*", "*"]
     },
-    "target": "es5",
-    "module": "es2015",
+    "strict": true,
+    "target": "es6",
+    "module": "esnext",
     "jsx": "react",
     "moduleResolution": "node",
     "sourceMap": true,
     "removeComments": false,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "noUnusedLocals": true,
     "noUnusedParameters": false,
     "lib": [ "dom", "es6", "dom.iterable", "es2017" ],
-    "pretty": true
+    "pretty": true,
+    "noImplicitThis": false,
+    "resolveJsonModule": true
   },
   "exclude": [
     "**/node_modules/*",

@@ -1,69 +1,84 @@
 import '../css/index.css';
-import eventData from '../mocks/events';
-import videoData from '../mocks/videos';
+import eventData from '../mocks/events.json';
+import videoData from '../mocks/videos.json';
 import fillCard from './cardTemplate';
-import drawChart from './chart';
+import drawChart, {TChartData} from './chart';
 import InteractiveElement from './pointer';
 import { initVideoSource, initVideoContainerHandlers } from './video';
 
-function setContent(parentEl) {
+function setContent(parentEl: HTMLElement) {
   const template = document.getElementsByTagName('template')[0];
   const cardTmpl = template.content.querySelector('div.card');
-  const content = eventData.events || [];
-  let card = null;
 
-  for (let i = 0; i < content.length; i++) {
-    card = document.importNode(cardTmpl, true);
-    fillCard(card, content[i]);
-    parentEl.appendChild(card);
+  if (cardTmpl) {
+    const content = eventData.events || [];
+    let card = null;
+    let currentContentEl;
 
-    if (content[i].data && content[i].data.type === 'graph') {
-      const chartContainer = document.getElementById('chart');
-      drawChart(chartContainer, content[i].data.values);
+    for (let i = 0; i < content.length; i++) {
+      currentContentEl = content[i];
+      card = document.importNode(cardTmpl, true);
+      fillCard(card, content[i]);
+      parentEl.appendChild(card);
+      const chartContainer = document.querySelector<HTMLCanvasElement>('#chart');
+
+      if (chartContainer && currentContentEl.data && currentContentEl.data.type === 'graph') {
+        drawChart(chartContainer, currentContentEl.data.values as TChartData);
+      }
     }
   }
 
-  const camera = document.querySelector('#camera .camera-view');
+  const camera = document.querySelector<HTMLDivElement>('#camera .camera-view');
+  const zoom = document.querySelector<HTMLDivElement>('#camera .camera-zoom__value');
+  const bright = document.querySelector<HTMLInputElement>('#camera .camera-bright__value');
   if (('ontouchstart' in window) || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0) {
     document.body.classList.add('touch-support');
 
-    const zoom = document.querySelector('#camera .camera-zoom__value');
-    const bright = document.querySelector('#camera .camera-bright__value');
-    const cameraProcessor = new InteractiveElement(camera, zoom, bright);
-    cameraProcessor.init();
+    if (camera && zoom && bright && window.PointerEvent) {
+      const cameraProcessor = new InteractiveElement(camera, zoom, bright);
+      cameraProcessor.init();
+    }
   }
 }
 
-function setContentVideo(parentEl) {
+function setContentVideo(parentEl: HTMLElement) {
   const template = document.getElementsByTagName('template')[2];
   const videoContainerTmpl = template.content.querySelector('.video-container');
-  const content = videoData.source || [];
-  let videoContainer = null;
-  let video = null;
 
-  for (let i = 0; i < content.length; i++) {
-    videoContainer = document.importNode(videoContainerTmpl, true);
-    video = videoContainer.querySelector('.video');
-    initVideoSource(video, content[i]);
-    parentEl.appendChild(videoContainer);
+  if (videoContainerTmpl) {
+    const content = videoData.source || [];
+    let videoContainer = null;
+    let video = null;
+
+    for (let i = 0; i < content.length; i++) {
+      videoContainer = document.importNode(videoContainerTmpl, true);
+      video = videoContainer.querySelector('.video');
+      initVideoSource(video, content[i]);
+      parentEl.appendChild(videoContainer);
+    }
+
+    initVideoContainerHandlers();
   }
 
-  initVideoContainerHandlers();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   const root = document.getElementById('content__layout');
   const title = document.getElementsByClassName('content__title')[0];
-  const { href } = window.location;
-  const url = new URL(href);
-  const page = url.searchParams.get('page');
 
-  if (page === 'events') {
-    title.textContent = 'Лента событий';
-    setContent(root);
-  } else {
-    title.textContent = 'Видеонаблюдение';
-    root.classList.add('content__layout_four-rows');
-    setContentVideo(root);
+  if (root && title) {
+    const { href } = window.location;
+    const url = new URL(href);
+    const page = url.searchParams.get('page');
+
+    if (page === 'events') {
+      title.textContent = 'Лента событий';
+      setContent(root);
+    } else {
+      title.textContent = 'Видеонаблюдение';
+      root.classList.add('content__layout_four-rows');
+      setContentVideo(root);
+    }
   }
+
 });
