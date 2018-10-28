@@ -1,30 +1,5 @@
 import {Chart, ChartPoint} from 'chart.js';
-
-interface IChartStyle {
-  water: string
-  electricity: string,
-  gas: string,
-  default: string,
-  [key: string]: string
-}
-
-declare type TChartDataPoint = [string, number];
-
-interface IElectricityData {
-  'electricity': TChartDataPoint[];
-}
-
-interface IGasData {
-  'gas': TChartDataPoint[];
-}
-
-interface IWaterData {
-  'water': TChartDataPoint[];
-}
-
-type IChartDataItem = (IElectricityData | IGasData | IWaterData) & {[key: string]: string};
-
-export type TChartData = IChartDataItem[];
+import {IChartStyle, TChartData} from '../interfaces/chart';
 
 const chartBackgroundColor: IChartStyle = {
   water: 'rgba(54, 162, 235, 0.2)',

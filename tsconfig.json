@@ -20,8 +20,7 @@
     "noUnusedParameters": false,
     "lib": [ "dom", "es6", "dom.iterable", "es2017" ],
     "pretty": true,
-    "noImplicitThis": false,
-    "resolveJsonModule": true
+    "noImplicitThis": false
   },
   "exclude": [
     "**/node_modules/*",

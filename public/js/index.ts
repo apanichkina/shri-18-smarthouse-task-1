@@ -2,16 +2,18 @@ import '../css/index.css';
 import eventData from '../mocks/events.json';
 import videoData from '../mocks/videos.json';
 import fillCard from './cardTemplate';
-import drawChart, {TChartData} from './chart';
+import drawChart from './chart';
+import {TChartData} from '../interfaces/chart';
 import InteractiveElement from './pointer';
 import { initVideoSource, initVideoContainerHandlers } from './video';
+import { ICardContent, ICardDataGraph } from '../interfaces/card';
 
 function setContent(parentEl: HTMLElement) {
   const template = document.getElementsByTagName('template')[0];
   const cardTmpl = template.content.querySelector('div.card');
 
   if (cardTmpl) {
-    const content = eventData.events || [];
+    const content = eventData.events as ICardContent[];
     let card = null;
     let currentContentEl;
 
@@ -22,8 +24,8 @@ function setContent(parentEl: HTMLElement) {
       parentEl.appendChild(card);
       const chartContainer = document.querySelector<HTMLCanvasElement>('#chart');
 
-      if (chartContainer && currentContentEl.data && currentContentEl.data.type === 'graph') {
-        drawChart(chartContainer, currentContentEl.data.values as TChartData);
+      if (chartContainer && currentContentEl.data && (currentContentEl.data as ICardDataGraph).type === 'graph') {
+        drawChart(chartContainer, (currentContentEl.data as ICardDataGraph).values as TChartData);
       }
     }
   }

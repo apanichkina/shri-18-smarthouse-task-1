@@ -1,3 +1,24 @@
+interface INodeState {
+  startPositionX: number
+  startPositionY: number
+  brightness: number
+  dBrightness: number
+  scale: number
+}
+
+interface IGesture {
+  prevX: number,
+  prevY: number,
+  prevTs: number,
+}
+//
+
+declare global  {
+  interface Window {
+    PointerEvent: typeof PointerEvent;
+  }
+}
+
 const MIN_SCALE = 1;
 const MAX_SCALE = 10;
 
@@ -67,26 +88,6 @@ function getScale(start: PointerEvent[], end: PointerEvent[]) {
   const startDistance = getDistance(start[0], start[1]);
 
   return endDistance / startDistance;
-}
-interface INodeState {
-  startPositionX: number
-  startPositionY: number
-  brightness: number
-  dBrightness: number
-  scale: number
-}
-
-interface IGesture {
-  prevX: number,
-  prevY: number,
-  prevTs: number,
-}
-//
-
-declare global  {
-  interface Window {
-    PointerEvent: typeof PointerEvent;
-  }
 }
 
 export default class InteractiveElement {

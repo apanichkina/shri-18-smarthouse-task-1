@@ -1,38 +1,27 @@
 import getIconSrc from './icons';
+import {
+  IIndicatorData,
+  IIndicatorValue,
+  ICardContent,
+  TCardData,
+  ICardDataButtons,
+  ICardDataMusic,
+  IIndicatorDataMeta,
+  ICardDataCamera, ICardDataGraph,
+} from '../interfaces/card';
 
 const TEMPLATE = document.getElementsByTagName('template');
 const SEC_PER_MIN = 60;
 
-interface IIndicatorData {
-  temperature: string
-  humidity: string
-  [key: string]: string
-}
-const INDICATOR_NAME_RU: IIndicatorData = {
+const INDICATOR_NAME_RU: IIndicatorDataMeta = {
   temperature: 'Температура',
   humidity: 'Влажность',
 };
 
-const INDICATOR_UNIT_RU: IIndicatorData = {
+const INDICATOR_UNIT_RU: IIndicatorDataMeta = {
   temperature: '&#x2103;',
   humidity: '%',
 };
-
-interface IIndicatorValue {
-  key: string,
-  value: number,
-}
-
-interface ICardContent {
-  type: string
-  title: string
-  icon: string
-  source: string
-  time: string
-  description: string | null
-  data?: any
-  size: string
-}
 
 function secToTime(seconds: string) {
   const secondsValid = Number(seconds);
@@ -72,36 +61,40 @@ function fillIndicator(container: HTMLElement, data: IIndicatorValue) {
   }
 }
 
-function fillCardDataEl(type: string, data: any) {
+function fillCardDataEl(type: string, data: TCardData) {
   const template = TEMPLATE[1];
   const result = [];
+  let currentData: TCardData;
 
-  if (data.buttons) {
+  if ((data as ICardDataButtons).buttons) {
+    currentData = data as ICardDataButtons;
     const controlsTmpl = template.content.querySelector('div.controls');
     const buttonTmpl = template.content.querySelector('button.button');
     const controls = document.importNode(controlsTmpl as Node, true);
 
-    for (let i = 0; i < data.buttons.length; i++) {
+    for (let i = 0; i < currentData.buttons.length; i++) {
       const button = document.importNode(buttonTmpl as Node, true);
-      button.textContent = data.buttons[i];
+      button.textContent = currentData.buttons[i];
       controls.appendChild(button);
     }
 
     result.push(controls);
   }
 
-  if (data.temperature && data.humidity) {
+  if ((data as IIndicatorData).temperature) {
+    currentData = data as IIndicatorData;
     const indicatorsTmpl = template.content.querySelector('.indicators');
     const indicators = indicatorsTmpl ? indicatorsTmpl.cloneNode(true) as HTMLElement : null;
     if (indicators) {
-      fillIndicator(indicators, { key: 'temperature', value: data.temperature });
-      fillIndicator(indicators, { key: 'humidity', value: data.humidity });
+      fillIndicator(indicators, { key: 'temperature', value: currentData.temperature });
+      fillIndicator(indicators, { key: 'humidity', value: currentData.humidity });
 
       result.push(document.importNode(indicators, true));
     }
   }
 
-  if (data.track && data.volume) {
+  if ((data as ICardDataMusic).track) {
+    currentData = data as ICardDataMusic;
     const musicTmpl = template.content.querySelector<HTMLTemplateElement>('.music');
     const music = musicTmpl ? musicTmpl.cloneNode(true) as HTMLElement : null;
     if (music) {
@@ -113,10 +106,10 @@ function fillCardDataEl(type: string, data: any) {
       const trackLength = music.querySelector('.music__track-length');
 
       if (image && trackBar && volumeBar && name && volumeValue && trackLength) {
-        image.src = data.albumcover;
-        name.textContent = [data.artist, data.track.name].join(' - ');
-        volumeBar.value = data.volume;
-        volumeValue.textContent = `${data.volume}%`;
+        image.src = currentData.albumcover;
+        name.textContent = [currentData.artist, currentData.track.name].join(' - ');
+        volumeBar.value = String(currentData.volume);
+        volumeValue.textContent = `${currentData.volume}%`;
 
         volumeBar.addEventListener('input', (evt) => {
           const target: EventTarget | null = evt.target;
@@ -126,8 +119,8 @@ function fillCardDataEl(type: string, data: any) {
           }
         });
 
-        trackBar.value = timeToSec(data.track.length);
-        trackLength.textContent = data.track.length;
+        trackBar.value = timeToSec(currentData.track.length);
+        trackLength.textContent = currentData.track.length;
 
         trackBar.addEventListener('input', (evt) => {
           const target: EventTarget | null = evt.target;
@@ -141,13 +134,13 @@ function fillCardDataEl(type: string, data: any) {
     }
   }
 
-  if (data.image) {
+  if ((data as ICardDataCamera).image) {
     const camTmpl = template.content.querySelector('.camera') as Node;
     const cam = document.importNode(camTmpl, true);
     result.push(cam);
   }
 
-  if (data.type === 'graph') {
+  if ((data as ICardDataGraph).type === 'graph') {
     const chartTmpl = template.content.querySelector('.chart-container');
     const chart = document.importNode(chartTmpl as Node, true);
     result.push(chart);

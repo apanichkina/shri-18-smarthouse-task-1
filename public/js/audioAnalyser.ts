@@ -1,3 +1,5 @@
+import {VideoElementWithMedia} from '../interfaces/video';
+
 export default class AudioAnalyser {
   public audioContext: AudioContext;
   public source: MediaElementAudioSourceNode | null;
@@ -10,8 +12,8 @@ export default class AudioAnalyser {
 
   public alreadyDraw: boolean;
 
-  constructor(canvas: HTMLCanvasElement, AudioContext: any) {
-    this.audioContext = new AudioContext();
+  constructor(canvas: HTMLCanvasElement, audioContext: AudioContext) {
+    this.audioContext = audioContext;
     this.source = null;
 
     this.analyser = this.audioContext.createAnalyser();
@@ -31,7 +33,7 @@ export default class AudioAnalyser {
     this.alreadyDraw = false;
   }
 
-  public init(sourceInput: HTMLVideoElement & {mediaElementSource: MediaElementAudioSourceNode | null}): void {
+  public init(sourceInput: VideoElementWithMedia): void {
     if (sourceInput.mediaElementSource) {
       this.source = sourceInput.mediaElementSource;
     } else {

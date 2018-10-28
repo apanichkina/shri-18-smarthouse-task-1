@@ -1,4 +1,5 @@
 import AudioAnalyser from './audioAnalyser';
+import {VideoElementWithMedia} from '../interfaces/video';
 
 const px = (value: number | string): string => `${value}px`;
 
@@ -35,7 +36,7 @@ export default class Popup {
     this.video = el.querySelector('.popup_video');
 
     const AudioContext = window.AudioContext || window.webkitAudioContext;
-    this.audioAnalyser = this.indicator && AudioContext ? new AudioAnalyser(this.indicator, AudioContext) : null;
+    this.audioAnalyser = this.indicator && AudioContext ? new AudioAnalyser(this.indicator, new AudioContext()) : null;
 
     this.brightness = '100';
     this.contrast = '100';
@@ -101,7 +102,7 @@ export default class Popup {
   public init(): void {
     if (this.sourceEl) {
       if (this.audioAnalyser) {
-        this.audioAnalyser.init(this.sourceEl as HTMLVideoElement & {mediaElementSource: MediaElementAudioSourceNode | null});
+        this.audioAnalyser.init(this.sourceEl as VideoElementWithMedia);
       }
       this.initFilter();
       const contentRect = this.sourceEl.getBoundingClientRect();
