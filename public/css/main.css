@@ -110,7 +110,7 @@ body {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   grid-gap: var(--card-outer-space);
-  justify-content: center;
+  /*justify-content: center;*/
 }
 
 .content__layout_four-rows {

@@ -13,7 +13,7 @@
  
 `npm start`
 
-2.В данном репозитории (ветка **video**)
+2.В данном репозитории
 
 `npm i`
 
@@ -34,3 +34,38 @@
 
 --- 
 ##### [Лицензия](https://docviewer.yandex.ru/view/1130000031416187/?*=rPcLBpqhHesbYQxX%2BW33tN%2FZqbR7InVybCI6InlhLXdpa2k6Ly93aWtpLWFwaS55YW5kZXgucnUvc2hyaS0yMDE4LWlpL2hvbWV3b3JrL2FkYXB0aXZuYWphLXZqb3JzdGthL2xpY2Vuc2UucGRmIiwidGl0bGUiOiJsaWNlbnNlLnBkZiIsInVpZCI6IjExMzAwMDAwMzE0MTYxODciLCJ5dSI6IjgwMzgwNTc4MDE1MzMwNjc1MzciLCJub2lmcmFtZSI6ZmFsc2UsInRzIjoxNTM4NzYyOTYzMzA5fQ%3D%3D)
+
+
+## UPD
+
+Код переведен на typescript. Проект запускается также (см выше), обязательно запустить стриминг видео. Для проверки дз по адаптивности перейти на вкладку "События".
+
+**Возникшие сложности:**
+
+1 В при работе с dom элементами почти всегда нужно проверять что они не null, поскольку они вытаскиваются по css селекторам.
+
+2 В работе с шаблонизацией на основе  <template/> все не гладко с точки зрения типов. Мешаются один и тот же элемент выступает как Node и как HTMLElement.
+Например:
+```sh
+const template = document.getElementsByTagName('template')[1];
+const musicTmpl = template.content.querySelector<HTMLTemplateElement>('.music');
+const music = musicTmpl ? musicTmpl.cloneNode(true) as HTMLElement : null;
+if (music) {
+  const image: HTMLInputElement | null = music.querySelector('.music__album-cover');
+  ...
+}
+```
+3 Использование pointer events и audio context требует переопределения интерфейса Window в модуле. Хотя сами типы PointerEvent и AudioContext описаны в `lib.dom.d.ts`.
+```sh
+declare global  {
+  interface Window {
+    PointerEvent: typeof PointerEvent;
+  }
+}
+```
+4 При описании формата данных поля `data` из `events.json` в интерфейсе использовалось объединение типов `TCardData = ICardDataGraph | IIndicatorData | ICardDataMusic | ICardDataButtons | ICardDataCamera;`.
+При этом когда используетя содержимое этого поля (`events[0].data`) необходимо пытаться привести его к одному из подтипов (`events[0].data as ICardDataGraph`).
+
+В целом в процессе перевода кодовой базы на ts были найдены мелкие ошибки типа "ожидалась строка, а вернули число" и пришло осознание, что querySelector может вернуть null.
+
+Дальше планирую писать на ts.

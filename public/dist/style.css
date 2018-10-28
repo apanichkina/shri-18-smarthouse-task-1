@@ -236,9 +236,7 @@ html, body {
       grid-template-columns: repeat(6, 1fr);
   grid-gap: 20px;
   grid-gap: var(--card-outer-space);
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  /*justify-content: center;*/
 }
 
 .content__layout_four-rows {

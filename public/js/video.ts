@@ -1,6 +1,6 @@
 import Popup from './popup';
 
-export function initVideoSource(video, url) {
+export function initVideoSource(video: HTMLVideoElement, url: string) {
   if (Hls.isSupported()) {
     const hls = new Hls();
     hls.loadSource(url);
@@ -20,14 +20,21 @@ export function initVideoSource(video, url) {
 
 export function initVideoContainerHandlers() {
   const videoContents = document.getElementsByClassName('video-content');
-  const popup = new Popup(document.getElementById('popup'));
+  const popupEl = document.querySelector<HTMLDivElement>('#popup');
 
-  for (let i = 0; i < videoContents.length; ++i) {
-    const videoContent = videoContents[i];
-    const videoSource = videoContent.querySelector('video');
+  if (popupEl) {
+    const popup = new Popup(popupEl);
 
-    videoSource.addEventListener('click', () => {
-      popup.open(videoSource);
-    });
+    for (let i = 0; i < videoContents.length; ++i) {
+      const videoContent = videoContents[i];
+      const videoSource = videoContent.querySelector('video');
+
+      if (videoSource) {
+        videoSource.addEventListener('click', () => {
+          popup.open(videoSource);
+        });
+      }
+
+    }
   }
 }

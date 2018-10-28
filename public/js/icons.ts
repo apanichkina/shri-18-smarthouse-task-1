@@ -10,7 +10,7 @@ import router from '../images/icons/router.svg';
 import stats from '../images/icons/stats.svg';
 import thermal from '../images/icons/thermal.svg';
 
-export default function getCardIconSrc(type, needWhite) {
+export default function getCardIconSrc(type: string, needWhite: boolean) {
   let src = '';
 
   if (needWhite) {
