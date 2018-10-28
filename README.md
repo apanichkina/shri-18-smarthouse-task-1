@@ -10,7 +10,7 @@
 
 `npm install`
 
-`npm run server`
+`npm run start:server`
 
 [http://localhost:8000](http://localhost:8000/api/events?type=info)
 
@@ -19,3 +19,15 @@
 Код сервера находится `server/server.js`, также в папке `server` лежат дополнительные модули, используемые для работы сервера.
 
 По запросу `/api/events?type=info:critical` файл раздается из `server/hostedFiles/events.json`
+
+## UPD
+
+Код переведен на typescript.
+Запускается код под ts-node 
+
+Запускается код под ts-node `npm run start:server`
+
+Ответы на вопросы к ДЗ:
+1. Перевести такой маленький сервер на typescript было не сложно. 
+2. В процессе перевода было обнаружено, что res.json() принимает один параметр и статус лучше передавать отдельно: `res.json(400, {a: 1}) => res.status(400).json({a:1})`
+3. После проверки дз я волью этот pull request и pull request с остальными ДЗ на typescript в master. Продолжу писать на ts.
