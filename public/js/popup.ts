@@ -4,6 +4,7 @@ import {VideoElementWithMedia} from '../interfaces/video';
 const px = (value: number | string): string => `${value}px`;
 
 declare global  {
+  // tslint:disable-next-line
   interface Window {
     AudioContext: typeof AudioContext;
     webkitAudioContext: typeof AudioContext;
