@@ -92,7 +92,6 @@
     <canvas id="chart" class="chart" width="200" height="200" />
   </div>
 </template>
-
 <!---->
 
 <!-- Video data -->
@@ -114,32 +113,23 @@
     <button class="nav__button icon-button" type="button"></button>
     <nav class="nav text_m text_bold">
       <ul class="nav-content">
-        <li class="nav__tab">
-          <a href="/?page=events" class="link">
+        <li class="nav__tab" data-page="events">
             События
-          </a>
         </li>
-        <li class="nav__tab nav__tab_active">
-          <a href="/" class="link">
+        <li class="nav__tab" data-page="video">
             Видеонаблюдение
-          </a>
         </li>
-        <li class="nav__tab">
-          <a href="/" class="link">
+        <li class="nav__tab" data-page="tools">
             Устройства
-          </a>
         </li>
-        <li class="nav__tab">
-          <a href="/" class="link">
+        <li class="nav__tab" data-page="scenarios">
             Сценарии
-          </a>
         </li>
       </ul>
     </nav>
   </header>
   <main class="content container">
     <div class="content__title text_bold">Лента событий</div>
-
     <div id="content__layout" class="content__layout">
       <!-- content -->
     </div>

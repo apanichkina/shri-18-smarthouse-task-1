@@ -243,6 +243,12 @@ html, body {
   /*grid-template-rows: repeat(4, 1fr);*/
 }
 
+.loader {
+  height: 128px;
+  width: 128px;
+  background: url('../images/loading.gif') no-repeat center center;
+}
+
 @media (max-width: 1199px) {
   .content {
     width: 90%;
@@ -350,21 +356,18 @@ html, body {
   margin: 3px 0 3px 20px;
   cursor: pointer;
   vertical-align: top;
-}
-
-.nav__tab .link {
   opacity: 0.6;
   color: #333;
   color: var(--color-text);
 }
 
-.nav__tab .link:hover {
+.nav__tab:hover {
   color: #333 !important;
   color: var(--color-text) !important;
   opacity: 1 !important;
 }
 
-.nav__tab_active .link {
+.nav__tab_active {
   opacity: 1;
 }
 
