@@ -15,3 +15,8 @@ interface IDictionary<T> {
 declare type Booleanum = 0 | 1;
 
 declare const Hls: any;
+
+// tslint:disable-next-line
+interface ElementWithDataset extends Element {
+  dataset: any;
+}

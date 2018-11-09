@@ -117,6 +117,12 @@ body {
   /*grid-template-rows: repeat(4, 1fr);*/
 }
 
+.loader {
+  height: 128px;
+  width: @height;
+  background: url('../images/loading.gif') no-repeat center center;
+}
+
 @media (--less-than-1199-viewport) {
   .content {
     width: 90%;

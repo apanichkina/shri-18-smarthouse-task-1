@@ -11,9 +11,9 @@ interface IGesture {
   prevY: number,
   prevTs: number,
 }
-//
 
 declare global  {
+  // tslint:disable-next-line
   interface Window {
     PointerEvent: typeof PointerEvent;
   }

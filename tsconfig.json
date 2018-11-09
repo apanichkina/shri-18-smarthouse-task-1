@@ -9,6 +9,7 @@
       "*" : ["./node_modules/@types/*", "*"]
     },
     "strict": true,
+    "strictFunctionTypes": false,
     "target": "es6",
     "module": "esnext",
     "jsx": "react",
