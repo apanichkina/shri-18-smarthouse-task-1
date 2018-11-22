@@ -7,14 +7,10 @@ import {TChartData} from '../interfaces/chart';
 import InteractiveElement from './pointer';
 import {initVideoSource, initVideoContainerHandlers} from './video';
 import {ICardContent, ICardDataGraph} from '../interfaces/card';
-import {IStore, StateSingletonClass} from 'shri-18-flux-framework/lib/public/src/Store';
+import {IStore, Store} from 'shri-18-flux-framework/lib/public/src/Store';
 import {createAction, IAction} from 'shri-18-flux-framework/lib/public/src/Action';
-
-interface INameAction extends IAction {
-  payload: {
-    name: string;
-  }
-}
+import {Dispatcher} from 'shri-18-flux-framework/lib/public/src/Dispatcher';
+import {EventEmitter} from 'shri-18-flux-framework/lib/public/src/EventEmitter';
 
 interface IPageActionPayload {
   page: string
@@ -134,7 +130,7 @@ function changeActiveNavTab(page: string) {
   }
 }
 
-function initNavTabs(store: IStore) {
+function initNavTabs(dispatcher: Dispatcher) {
   const navBtns = document.getElementsByClassName('nav__tab');
 
   for (let i = 0; i < navBtns.length; ++i) {
@@ -143,7 +139,7 @@ function initNavTabs(store: IStore) {
 
     if (page) {
       el.addEventListener('click', () => {
-        store.dispatch(actionRoute({page}));
+        dispatcher.dispatch(actionRoute({page}));
         localStorage.setItem('page', page);
       });
     }
@@ -153,50 +149,43 @@ function initNavTabs(store: IStore) {
 document.addEventListener('DOMContentLoaded', () => {
   const root = document.getElementById('content__layout');
   const title = document.getElementsByClassName('content__title')[0];
-  const store = StateSingletonClass.getInstance();
   const initialPage = localStorage.getItem('page') || 'events';
+  const eventEmitter = new EventEmitter();
+  const dispatcher = Dispatcher.getInstance();
+  const initialStore = {page: initialPage, isEventsFetching: false};
+  const rootReducer = (store: IStore, action: IPageAction) => {
+    switch (action.type) {
+      case 'ROUTE':
+        return {
+          ...store,
+          page: action.payload.page,
+        };
+      case EEvents.FETCH_START:
+        return {
+          ...store,
+          isEventsFetching: true,
+        };
+      case EEvents.FETCH_SUCCESS:
+        return {
+          ...store,
+          isEventsFetching: false,
+        };
+      default:
+        return store;
+    }
+  };
 
-  store.setInitialState({name: 'Anna', page: initialPage});
-  store.addReducers({
-    name: (store: string = 'some body', action: INameAction): string => {
-      switch (action.type) {
-        case 'nevPerson':
-          return action.payload.name;
-        default:
-          return store;
-      }
-    },
-    page: (store: string = 'events', action: IPageAction): string => {
-      switch (action.type) {
-        case 'ROUTE':
-          return action.payload.page;
-        default:
-          return store;
-      }
-    },
-    isEventsFetching: (store: boolean = false, action: IAction): boolean => {
-      switch (action.type) {
-        case EEvents.FETCH_START:
-          return true;
-        case EEvents.FETCH_SUCCESS:
-          return false;
-        default:
-          return store;
-      }
-    },
-  });
-  initNavTabs(store);
+  initNavTabs(dispatcher);
 
   if (root && title) {
     const renderEventsPage = (isFetching: boolean) => setContentEvents(root, isFetching);
     const renderVideoPage = () => setContentVideo(root);
     const renderEmptyPage = () => root.innerHTML = 'Тут скоро будет интересно';
 
-    const routesManager = (prevSore: any) => {
-      const { page, isEventsFetching } = store.getStore();
-      const needUpdate = prevSore.page !== page;
+    const routesManager = (data: any) => {
+      const { type, store: {page, isEventsFetching} } = data;
 
-      if (needUpdate) {
+      if (type === 'ROUTE') {
         changeActiveNavTab(page);
         title.textContent = EPageTitle[page];
 
@@ -213,22 +202,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
-      // костыль так как мой стор не умеет бызывать только нужных слушателей, а дергает всех
-      if (prevSore.isEventsFetching !== isEventsFetching && page === 'events') {
+    };
+
+    const eventsManager = (data: any) => {
+      const { type, store: {page, isEventsFetching} } = data;
+
+      if (page === 'events' && [EEvents.FETCH_SUCCESS, EEvents.FETCH_START].includes(type)) {
         renderEventsPage(isEventsFetching);
       }
     };
 
-    // init
-    routesManager({});
+    eventEmitter.on('storeUpdate', routesManager);
+    eventEmitter.on('storeUpdate', eventsManager);
 
-    // callback for navigation
-    store.addListener(routesManager);
+    const store = new Store(initialStore, rootReducer, dispatcher, eventEmitter);
+    dispatcher.dispatch(actionEventsFetchStart());
+    dispatcher.dispatch(actionRoute({page: initialPage}));
 
     // emulation of events async fetch
-    store.dispatch(actionEventsFetchStart());
     fetchEvents.then(() => {
-      store.dispatch(actionEventsFetchSuccess());
+      dispatcher.dispatch(actionEventsFetchSuccess());
     });
   }
 
